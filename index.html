@@ -1,0 +1,3450 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestionale Prenotazioni</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+padding: 0;
+font-family: Arial, Helvetica, sans-serif;
+background: #f4f6f8;
+color: #263238;
+font-size: 14px;
+}
+
+button,
+input,
+select,
+textarea {
+font-family: inherit;
+}
+
+.contenitore {
+width: 100%;
+max-width: 1500px;
+margin: 0 auto;
+padding: 12px 18px 30px;
+}
+
+h1 {
+margin: 0 0 10px;
+font-size: 24px;
+color: #263238;
+}
+
+h2 {
+margin: 0 0 10px;
+font-size: 18px;
+color: #37474f;
+}
+
+h3 {
+margin: 0 0 8px;
+font-size: 15px;
+}
+
+p {
+margin: 5px 0;
+}
+
+/* LOGIN */
+
+#schermataLogin {
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.box-login {
+width: 100%;
+max-width: 380px;
+background: white;
+padding: 28px;
+border-radius: 12px;
+box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+}
+
+.box-login h1 {
+text-align: center;
+margin-bottom: 20px;
+}
+
+#app {
+display: none;
+}
+
+/* TESTATA */
+
+.testata {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 15px;
+margin-bottom: 10px;
+}
+
+.testata-destra {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.utente-loggato {
+color: #607d8b;
+font-size: 13px;
+}
+
+/* SEZIONI */
+
+.sezione {
+background: white;
+border-radius: 9px;
+padding: 12px 14px;
+margin-bottom: 12px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* FORM PRENOTAZIONE */
+
+.sezione-prenotazione {
+padding: 10px 12px;
+}
+
+.sezione-prenotazione .titolo-sezione {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+}
+
+.griglia-form {
+display: grid;
+grid-template-columns:
+1.35fr
+1fr
+0.75fr
+0.75fr
+0.75fr
+0.75fr
+0.8fr
+1.2fr;
+gap: 7px 9px;
+align-items: end;
+}
+
+.campo {
+display: flex;
+flex-direction: column;
+min-width: 0;
+}
+
+.campo label {
+font-size: 11px;
+font-weight: bold;
+color: #546e7a;
+margin-bottom: 3px;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+width: 100%;
+border: 1px solid #cfd8dc;
+border-radius: 5px;
+padding: 7px 8px;
+font-size: 13px;
+background: #fff;
+min-height: 32px;
+}
+
+.campo textarea {
+min-height: 32px;
+resize: vertical;
+}
+
+.campo-largo {
+grid-column: span 2;
+}
+
+.azioni-form {
+display: flex;
+gap: 7px;
+align-items: center;
+margin-top: 8px;
+}
+
+.azioni-form .btn {
+min-width: 125px;
+}
+
+/* BOTTONI */
+
+.btn {
+border: none;
+border-radius: 6px;
+padding: 8px 12px;
+cursor: pointer;
+font-size: 13px;
+font-weight: bold;
+transition: 0.15s;
+}
+
+.btn:hover {
+opacity: 0.88;
+}
+
+.btn-principale {
+background: #1976d2;
+color: white;
+}
+
+.btn-secondario {
+background: #eceff1;
+color: #37474f;
+}
+
+.btn-success {
+background: #2e7d32;
+color: white;
+}
+
+.btn-pericolo {
+background: #c62828;
+color: white;
+}
+
+.btn-piccolo {
+padding: 5px 8px;
+font-size: 11px;
+}
+
+/* MESSAGGI */
+
+#messaggi {
+min-height: 0;
+}
+
+.messaggio {
+padding: 9px 12px;
+border-radius: 6px;
+margin-bottom: 10px;
+font-size: 13px;
+}
+
+.messaggio.successo {
+background: #e8f5e9;
+color: #2e7d32;
+}
+
+.messaggio.errore {
+background: #ffebee;
+color: #c62828;
+}
+
+.messaggio.info {
+background: #e3f2fd;
+color: #1565c0;
+}
+
+/* DISPONIBILITA */
+
+.disponibilita-chiusa {
+padding: 2px 0;
+}
+
+.pulsante-disponibilita {
+width: 100%;
+text-align: left;
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: #f7f9fa;
+border: 1px solid #dce3e6;
+color: #37474f;
+padding: 9px 12px;
+border-radius: 7px;
+cursor: pointer;
+font-weight: bold;
+font-size: 13px;
+}
+
+.pulsante-disponibilita:hover {
+background: #eef2f4;
+}
+
+#pannelloDisponibilita {
+display: none;
+margin-top: 10px;
+}
+
+.disponibilita-filtri {
+display: flex;
+align-items: end;
+gap: 8px;
+flex-wrap: wrap;
+margin-bottom: 10px;
+}
+
+.disponibilita-filtri .filtro {
+display: flex;
+flex-direction: column;
+}
+
+.disponibilita-filtri label {
+font-size: 11px;
+font-weight: bold;
+color: #546e7a;
+margin-bottom: 3px;
+}
+
+.disponibilita-filtri input {
+padding: 7px;
+border: 1px solid #cfd8dc;
+border-radius: 5px;
+font-size: 13px;
+}
+
+#risultatoDisponibilita {
+margin-top: 8px;
+}
+
+.riepilogo-disponibilita {
+padding: 9px 11px;
+background: #f7f9fa;
+border-radius: 6px;
+margin-bottom: 8px;
+font-size: 13px;
+}
+
+.lista-camere-disponibili {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+}
+
+.camera-disponibile {
+background: #e8f5e9;
+border: 1px solid #a5d6a7;
+color: #2e7d32;
+padding: 6px 10px;
+border-radius: 5px;
+font-weight: bold;
+font-size: 12px;
+}
+
+.tabella-disponibilita {
+width: 100%;
+border-collapse: collapse;
+margin-top: 8px;
+font-size: 12px;
+}
+
+.tabella-disponibilita th,
+.tabella-disponibilita td {
+padding: 6px 8px;
+border-bottom: 1px solid #eceff1;
+text-align: left;
+}
+
+.disponibile {
+color: #2e7d32;
+font-weight: bold;
+}
+
+.non-disponibile {
+color: #c62828;
+font-weight: bold;
+}
+
+/* DETTAGLIO PRENOTAZIONE */
+
+#dettaglioPrenotazione {
+display: none;
+background: #fffde7;
+border: 1px solid #ffe082;
+border-radius: 7px;
+padding: 10px 12px;
+margin-bottom: 12px;
+}
+
+.dettaglio-titolo {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 6px;
+}
+
+.dettaglio-grid {
+display: grid;
+grid-template-columns: repeat(6, 1fr);
+gap: 6px 12px;
+font-size: 12px;
+}
+
+.dettaglio-voce strong {
+display: block;
+color: #607d8b;
+font-size: 10px;
+text-transform: uppercase;
+margin-bottom: 2px;
+}
+
+/* CALENDARIO */
+
+.calendario-intestazione {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 10px;
+margin-bottom: 8px;
+flex-wrap: wrap;
+}
+
+.controlli-calendario {
+display: flex;
+gap: 5px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.mese-titolo {
+font-weight: bold;
+font-size: 17px;
+min-width: 150px;
+text-align: center;
+}
+
+.filtro-camera {
+padding: 6px 8px;
+border: 1px solid #cfd8dc;
+border-radius: 5px;
+font-size: 12px;
+}
+
+.calendario-wrapper {
+overflow-x: auto;
+border: 1px solid #cfd8dc;
+border-radius: 6px;
+background: white;
+}
+
+.calendario {
+position: relative;
+min-width: 1923px;
+}
+
+.riga-calendario {
+display: flex;
+height: 42px;
+position: relative;
+}
+
+.cella-camera {
+width: 125px;
+min-width: 125px;
+background: #fafafa;
+border-right: 1px solid #cfd8dc;
+border-bottom: 1px solid #cfd8dc;
+display: flex;
+align-items: center;
+padding-left: 9px;
+font-weight: bold;
+font-size: 12px;
+position: sticky;
+left: 0;
+z-index: 10;
+}
+
+.giorno {
+width: 58px;
+min-width: 58px;
+border-right: 1px solid #eceff1;
+border-bottom: 1px solid #eceff1;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 11px;
+position: relative;
+cursor: pointer;
+}
+
+.giorno:hover {
+background: #e3f2fd;
+}
+
+.giorno.oggi {
+background: #fff8e1;
+font-weight: bold;
+}
+
+.riga-intestazione {
+height: 38px;
+}
+
+.riga-intestazione .cella-camera {
+background: #37474f;
+color: white;
+z-index: 12;
+}
+
+.riga-intestazione .giorno {
+background: #455a64;
+color: white;
+border-color: #607d8b;
+cursor: default;
+}
+
+.riga-intestazione .giorno:hover {
+background: #455a64;
+}
+
+.area-prenotazioni {
+position: absolute;
+left: 125px;
+right: 0;
+top: 0;
+bottom: 0;
+pointer-events: none;
+}
+
+.barra-prenotazione {
+position: absolute;
+top: 5px;
+height: 32px;
+border-radius: 5px;
+background: #43a047;
+color: white;
+padding: 0 7px;
+display: flex;
+align-items: center;
+overflow: hidden;
+cursor: pointer;
+pointer-events: auto;
+box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+font-size: 11px;
+font-weight: bold;
+white-space: nowrap;
+z-index: 5;
+}
+
+.barra-prenotazione:hover {
+filter: brightness(0.93);
+z-index: 20;
+}
+
+.barra-prenotazione.annullata {
+background: #90a4ae;
+text-decoration: line-through;
+}
+
+.linea-confine {
+position: absolute;
+top: 0;
+bottom: 0;
+width: 2px;
+background: rgba(0,0,0,0.18);
+z-index: 7;
+pointer-events: none;
+}
+
+.etichetta-confine {
+position: absolute;
+top: -2px;
+transform: translateX(-50%);
+background: #fff;
+border: 1px solid #cfd8dc;
+border-radius: 3px;
+padding: 1px 4px;
+font-size: 9px;
+color: #546e7a;
+z-index: 15;
+pointer-events: none;
+}
+
+.messaggio-calendario {
+padding: 15px;
+text-align: center;
+color: #78909c;
+}
+
+/* TABELLA PRENOTAZIONI */
+
+.tabella-wrapper {
+overflow-x: auto;
+}
+
+table.tabella-prenotazioni {
+width: 100%;
+border-collapse: collapse;
+font-size: 12px;
+}
+
+.tabella-prenotazioni th {
+background: #455a64;
+color: white;
+padding: 7px 6px;
+text-align: left;
+white-space: nowrap;
+}
+
+.tabella-prenotazioni td {
+padding: 6px;
+border-bottom: 1px solid #eceff1;
+vertical-align: middle;
+}
+
+.tabella-prenotazioni tr:hover td {
+background: #f7f9fa;
+}
+
+.stato {
+display: inline-block;
+padding: 3px 6px;
+border-radius: 4px;
+font-size: 10px;
+font-weight: bold;
+}
+
+.stato-confermata {
+background: #e8f5e9;
+color: #2e7d32;
+}
+
+.stato-cancellata {
+background: #ffebee;
+color: #c62828;
+}
+
+.azioni-tabella {
+display: flex;
+gap: 4px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+.griglia-form {
+grid-template-columns: repeat(4, 1fr);
+}
+
+.campo-largo {
+grid-column: span 2;
+}
+
+.dettaglio-grid {
+grid-template-columns: repeat(3, 1fr);
+}
+}
+
+@media (max-width: 700px) {
+.contenitore {
+padding: 8px;
+}
+
+.griglia-form {
+grid-template-columns: repeat(2, 1fr);
+}
+
+.campo-largo {
+grid-column: span 2;
+}
+
+.dettaglio-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+
+.testata {
+align-items: flex-start;
+flex-direction: column;
+}
+
+.testata-destra {
+width: 100%;
+justify-content: space-between;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="schermataLogin">
+<div class="box-login">
+<h1>Gestionale Prenotazioni</h1>
+
+<div class="campo">
+<label for="emailLogin">Email</label>
+<input type="email" id="emailLogin" autocomplete="username">
+</div>
+
+<div class="campo" style="margin-top:10px;">
+<label for="passwordLogin">Password</label>
+<input type="password" id="passwordLogin" autocomplete="current-password">
+</div>
+
+<button class="btn btn-principale"
+id="btnLogin"
+style="width:100%; margin-top:15px;">
+Accedi
+</button>
+
+<div id="erroreLogin" style="margin-top:10px;"></div>
+</div>
+</div>
+
+
+<!-- APP -->
+<div id="app">
+
+<div class="contenitore">
+
+<!-- TESTATA -->
+<div class="testata">
+<h1>Gestionale Prenotazioni</h1>
+
+<div class="testata-destra">
+<span class="utente-loggato" id="utenteLoggato"></span>
+<button class="btn btn-secondario" id="btnLogout">
+Esci
+</button>
+</div>
+</div>
+
+<div id="messaggi"></div>
+
+
+<!-- NUOVA PRENOTAZIONE -->
+<div class="sezione sezione-prenotazione">
+
+<div class="titolo-sezione">
+<h2 id="titoloForm">Nuova prenotazione</h2>
+</div>
+
+<form id="formPrenotazione">
+
+<div class="griglia-form">
+
+<div class="campo">
+<label for="nome">Nome e cognome</label>
+<input type="text" id="nome" required>
+</div>
+
+<div class="campo">
+<label for="telefono">Telefono</label>
+<input type="text" id="telefono">
+</div>
+
+<div class="campo">
+<label for="camera">Camera</label>
+<select id="camera" required>
+<option value="">Seleziona</option>
+<option value="1">Camera 1</option>
+<option value="2">Camera 2</option>
+<option value="3">Camera 3</option>
+<option value="4">Camera 4</option>
+<option value="5">Camera 5</option>
+<option value="6">Camera 6</option>
+<option value="7">Camera 7</option>
+<option value="8">Camera 8</option>
+<option value="9">Camera 9</option>
+<option value="10">Camera 10</option>
+<option value="11">Camera 11</option>
+<option value="12">Camera 12</option>
+</select>
+</div>
+
+<div class="campo">
+<label for="numeroOspiti">Ospiti</label>
+<input type="number" id="numeroOspiti" min="1" value="1">
+</div>
+
+<div class="campo">
+<label for="arrivo">Arrivo</label>
+<input type="date" id="arrivo" required>
+</div>
+
+<div class="campo">
+<label for="partenza">Partenza</label>
+<input type="date" id="partenza" required>
+</div>
+
+<div class="campo">
+<label for="prezzo">Prezzo €</label>
+<input type="number" id="prezzo" min="0" step="0.01" value="0">
+</div>
+
+<div class="campo">
+<label for="caparra">Caparra €</label>
+<input type="number" id="caparra" min="0" step="0.01" value="0">
+</div>
+
+<div class="campo">
+<label for="importoAnimali">Animali €</label>
+<input type="number" id="importoAnimali" min="0" step="0.01" value="0">
+</div>
+
+<div class="campo">
+<label for="trattamento">Trattamento</label>
+<select id="trattamento">
+<option value="">Nessuno</option>
+<option value="Solo pernottamento">Solo pernottamento</option>
+<option value="Colazione">Colazione</option>
+<option value="Mezza pensione">Mezza pensione</option>
+<option value="Pensione completa">Pensione completa</option>
+</select>
+</div>
+
+<div class="campo">
+<label for="stato">Stato</label>
+<select id="stato">
+<option value="confermata">Confermata</option>
+<option value="cancellata">Cancellata</option>
+</select>
+</div>
+
+<div class="campo campo-largo">
+<label for="note">Note</label>
+<input type="text" id="note">
+</div>
+
+</div>
+
+<div class="azioni-form">
+<button type="submit" class="btn btn-success" id="btnSalva">
+Salva prenotazione
+</button>
+
+<button type="button"
+class="btn btn-secondario"
+id="btnAnnullaModifica"
+style="display:none;">
+Annulla modifica
+</button>
+</div>
+
+</form>
+</div>
+
+
+<!-- DISPONIBILITÀ -->
+<div class="sezione disponibilita-sezione">
+
+<div class="disponibilita-chiusa">
+
+<button type="button"
+class="pulsante-disponibilita"
+id="btnApriDisponibilita">
+<span>🔎 Verifica disponibilità camere</span>
+<span id="frecciaDisponibilita">▼</span>
+</button>
+
+</div>
+
+<div id="pannelloDisponibilita">
+
+<h2>Verifica disponibilità camere</h2>
+
+<p style="font-size:12px; color:#607d8b; margin-bottom:10px;">
+Inserisci arrivo e partenza. Se metti la stessa data in entrambi i campi,
+verrà verificata la disponibilità per quel solo giorno.
+</p>
+
+<div class="disponibilita-filtri">
+
+<div class="filtro">
+<label for="dataDisponibilitaDal">Dal</label>
+<input type="date" id="dataDisponibilitaDal">
+</div>
+
+<div class="filtro">
+<label for="dataDisponibilitaAl">Al</label>
+<input type="date" id="dataDisponibilitaAl">
+</div>
+
+<button class="btn btn-principale"
+id="btnCalcolaDisponibilita"
+type="button">
+Verifica
+</button>
+
+<button class="btn btn-secondario"
+id="btnChiudiDisponibilita"
+type="button">
+Chiudi
+</button>
+
+</div>
+
+<div id="risultatoDisponibilita"></div>
+
+</div>
+</div>
+
+
+<!-- DETTAGLIO PRENOTAZIONE -->
+<div id="dettaglioPrenotazione">
+
+<div class="dettaglio-titolo">
+<h3>Dettaglio prenotazione</h3>
+
+<button class="btn btn-secondario btn-piccolo"
+id="btnChiudiDettaglio">
+Chiudi
+</button>
+</div>
+
+<div class="dettaglio-grid" id="contenutoDettaglio"></div>
+
+</div>
+
+
+<!-- CALENDARIO -->
+<div class="sezione">
+
+<div class="calendario-intestazione">
+
+<div class="controlli-calendario">
+<button class="btn btn-secondario btn-piccolo"
+id="btnMesePrecedente">
+◀
+</button>
+
+<div class="mese-titolo" id="meseTitolo"></div>
+
+<button class="btn btn-secondario btn-piccolo"
+id="btnMeseSuccessivo">
+▶
+</button>
+
+<button class="btn btn-secondario btn-piccolo"
+id="btnOggi">
+Oggi
+</button>
+</div>
+
+<select id="filtroCameraCalendario"
+class="filtro-camera">
+<option value="">Tutte le camere</option>
+<option value="1">Camera 1</option>
+<option value="2">Camera 2</option>
+<option value="3">Camera 3</option>
+<option value="4">Camera 4</option>
+<option value="5">Camera 5</option>
+<option value="6">Camera 6</option>
+<option value="7">Camera 7</option>
+<option value="8">Camera 8</option>
+<option value="9">Camera 9</option>
+<option value="10">Camera 10</option>
+<option value="11">Camera 11</option>
+<option value="12">Camera 12</option>
+</select>
+
+</div>
+
+<div class="calendario-wrapper">
+<div class="calendario" id="calendario"></div>
+</div>
+
+</div>
+
+
+<!-- ELENCO PRENOTAZIONI -->
+<div class="sezione">
+
+<h2>Elenco prenotazioni</h2>
+
+<div class="tabella-wrapper">
+
+<table class="tabella-prenotazioni">
+
+<thead>
+<tr>
+<th>Nome</th>
+<th>Telefono</th>
+<th>Camera</th>
+<th>Ospiti</th>
+<th>Arrivo</th>
+<th>Partenza</th>
+<th>Prezzo</th>
+<th>Caparra</th>
+<th>Animali</th>
+<th>Trattamento</th>
+<th>Stato</th>
+<th>Note</th>
+<th>Azioni</th>
+</tr>
+</thead>
+
+<tbody id="tabellaPrenotazioni"></tbody>
+
+</table>
+
+</div>
+</div>
+
+</div>
+</div>
+
+
+<script>
+/* =========================================================
+SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+"https://kstdtrnsksvqtbjcmpah.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_GlJY5f9_2ryX3zZV495JpQ_2-85TsiO";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* =========================================================
+VARIABILI
+========================================================= */
+
+const CAMERE =
+Array.from({ length: 12 }, (_, indice) => indice + 1);
+
+const GIORNO_WIDTH = 58;
+const CAMERA_WIDTH = 125;
+
+let prenotazioni = [];
+
+let prenotazioneInModifica = null;
+
+let meseVisualizzato =
+new Date().getMonth();
+
+let annoVisualizzato =
+new Date().getFullYear();
+
+
+/* =========================================================
+ELEMENTI
+========================================================= */
+
+const schermataLogin =
+document.getElementById("schermataLogin");
+
+const app =
+document.getElementById("app");
+
+const emailLogin =
+document.getElementById("emailLogin");
+
+const passwordLogin =
+document.getElementById("passwordLogin");
+
+const btnLogin =
+document.getElementById("btnLogin");
+
+const erroreLogin =
+document.getElementById("erroreLogin");
+
+const btnLogout =
+document.getElementById("btnLogout");
+
+const utenteLoggato =
+document.getElementById("utenteLoggato");
+
+const formPrenotazione =
+document.getElementById("formPrenotazione");
+
+const titoloForm =
+document.getElementById("titoloForm");
+
+const btnSalva =
+document.getElementById("btnSalva");
+
+const btnAnnullaModifica =
+document.getElementById("btnAnnullaModifica");
+
+const nome =
+document.getElementById("nome");
+
+const telefono =
+document.getElementById("telefono");
+
+const camera =
+document.getElementById("camera");
+
+const numeroOspiti =
+document.getElementById("numeroOspiti");
+
+const arrivo =
+document.getElementById("arrivo");
+
+const partenza =
+document.getElementById("partenza");
+
+const prezzo =
+document.getElementById("prezzo");
+
+const caparra =
+document.getElementById("caparra");
+
+const importoAnimali =
+document.getElementById("importoAnimali");
+
+const trattamento =
+document.getElementById("trattamento");
+
+const stato =
+document.getElementById("stato");
+
+const note =
+document.getElementById("note");
+
+const messaggi =
+document.getElementById("messaggi");
+
+const btnApriDisponibilita =
+document.getElementById("btnApriDisponibilita");
+
+const btnChiudiDisponibilita =
+document.getElementById("btnChiudiDisponibilita");
+
+const pannelloDisponibilita =
+document.getElementById("pannelloDisponibilita");
+
+const frecciaDisponibilita =
+document.getElementById("frecciaDisponibilita");
+
+const dataDisponibilitaDal =
+document.getElementById("dataDisponibilitaDal");
+
+const dataDisponibilitaAl =
+document.getElementById("dataDisponibilitaAl");
+
+const btnCalcolaDisponibilita =
+document.getElementById("btnCalcolaDisponibilita");
+
+const risultatoDisponibilita =
+document.getElementById("risultatoDisponibilita");
+
+const dettaglioPrenotazione =
+document.getElementById("dettaglioPrenotazione");
+
+const contenutoDettaglio =
+document.getElementById("contenutoDettaglio");
+
+const btnChiudiDettaglio =
+document.getElementById("btnChiudiDettaglio");
+
+const calendario =
+document.getElementById("calendario");
+
+const meseTitolo =
+document.getElementById("meseTitolo");
+
+const filtroCameraCalendario =
+document.getElementById("filtroCameraCalendario");
+
+const tabellaPrenotazioni =
+document.getElementById("tabellaPrenotazioni");
+
+
+/* =========================================================
+FUNZIONI UTILI
+========================================================= */
+
+function mostraMessaggio(testo, tipo = "info") {
+
+messaggi.innerHTML = "";
+
+const div =
+document.createElement("div");
+
+div.className =
+"messaggio " + tipo;
+
+div.textContent = testo;
+
+messaggi.appendChild(div);
+
+setTimeout(() => {
+div.remove();
+}, 5000);
+}
+
+
+function mostraErroreLogin(testo) {
+
+erroreLogin.innerHTML = "";
+
+const div =
+document.createElement("div");
+
+div.className =
+"messaggio errore";
+
+div.textContent = testo;
+
+erroreLogin.appendChild(div);
+}
+
+
+function dataValida(data) {
+if (!data) return false;
+
+const d = new Date(data + "T00:00:00");
+
+return !isNaN(d.getTime());
+}
+
+
+function formattaData(data) {
+
+if (!data) return "";
+
+const parti =
+data.split("-");
+
+if (parti.length !== 3) {
+return data;
+}
+
+return (
+parti[2] +
+"/" +
+parti[1] +
+"/" +
+parti[0]
+);
+}
+
+
+function numeroCamera(valore) {
+
+if (
+valore === null ||
+valore === undefined ||
+valore === ""
+) {
+return null;
+}
+
+const testo =
+String(valore);
+
+const trovato =
+testo.match(/\d+/);
+
+if (!trovato) {
+return null;
+}
+
+return Number(trovato[0]);
+}
+
+
+function giornoDaStringa(data) {
+
+if (!data) return null;
+
+return new Date(
+data + "T00:00:00"
+);
+}
+
+
+function stringaDaData(data) {
+
+const anno =
+data.getFullYear();
+
+const mese =
+String(data.getMonth() + 1)
+.padStart(2, "0");
+
+const giorno =
+String(data.getDate())
+.padStart(2, "0");
+
+return (
+anno +
+"-" +
+mese +
+"-" +
+giorno
+);
+}
+
+
+function nomeMese(mese) {
+
+const mesi = [
+"Gennaio",
+"Febbraio",
+"Marzo",
+"Aprile",
+"Maggio",
+"Giugno",
+"Luglio",
+"Agosto",
+"Settembre",
+"Ottobre",
+"Novembre",
+"Dicembre"
+];
+
+return mesi[mese];
+}
+
+
+function giorniNelMese(anno, mese) {
+
+return new Date(
+anno,
+mese + 1,
+0
+).getDate();
+}
+
+
+/* =========================================================
+LOGIN
+========================================================= */
+
+async function controllaSessione() {
+
+const {
+data,
+error
+} = await supabaseClient.auth.getSession();
+
+if (error) {
+console.error(error);
+mostraLogin();
+return;
+}
+
+if (data.session) {
+mostraApp(data.session);
+} else {
+mostraLogin();
+}
+}
+
+
+function mostraLogin() {
+
+schermataLogin.style.display = "flex";
+app.style.display = "none";
+}
+
+
+async function mostraApp(sessione) {
+
+schermataLogin.style.display = "none";
+app.style.display = "block";
+
+if (sessione && sessione.user) {
+
+utenteLoggato.textContent =
+sessione.user.email || "";
+}
+
+await caricaPrenotazioni();
+
+impostaDatePredefinite();
+
+renderCalendario();
+
+renderTabellaPrenotazioni();
+}
+
+
+btnLogin.addEventListener("click", async () => {
+
+const email =
+emailLogin.value.trim();
+
+const password =
+passwordLogin.value;
+
+if (!email || !password) {
+
+mostraErroreLogin(
+"Inserisci email e password."
+);
+
+return;
+}
+
+btnLogin.disabled = true;
+btnLogin.textContent = "Accesso...";
+
+const {
+data,
+error
+} = await supabaseClient.auth.signInWithPassword({
+email,
+password
+});
+
+btnLogin.disabled = false;
+btnLogin.textContent = "Accedi";
+
+if (error) {
+
+console.error(error);
+
+mostraErroreLogin(
+"Accesso non riuscito: " +
+error.message
+);
+
+return;
+}
+
+mostraApp(data.session);
+});
+
+
+passwordLogin.addEventListener("keydown", (event) => {
+
+if (event.key === "Enter") {
+btnLogin.click();
+}
+});
+
+
+btnLogout.addEventListener("click", async () => {
+
+await supabaseClient.auth.signOut();
+
+prenotazioni = [];
+
+mostraLogin();
+
+emailLogin.value = "";
+passwordLogin.value = "";
+});
+
+
+/* =========================================================
+CARICAMENTO PRENOTAZIONI
+========================================================= */
+
+async function caricaPrenotazioni() {
+
+const {
+data,
+error
+} = await supabaseClient
+.from("prenotazioni")
+.select("*")
+.order("arrivo", { ascending: true });
+
+if (error) {
+
+console.error(error);
+
+mostraMessaggio(
+"Errore nel caricamento delle prenotazioni: " +
+error.message,
+"errore"
+);
+
+return;
+}
+
+prenotazioni =
+Array.isArray(data)
+? data
+: [];
+}
+
+
+/* =========================================================
+FORM
+========================================================= */
+
+function impostaDatePredefinite() {
+
+const oggi =
+new Date();
+
+const dataOggi =
+stringaDaData(oggi);
+
+if (!arrivo.value) {
+arrivo.value = dataOggi;
+}
+
+if (!partenza.value) {
+
+const domani =
+new Date(oggi);
+
+domani.setDate(
+domani.getDate() + 1
+);
+
+partenza.value =
+stringaDaData(domani);
+}
+
+if (!dataDisponibilitaDal.value) {
+dataDisponibilitaDal.value =
+dataOggi;
+}
+
+if (!dataDisponibilitaAl.value) {
+dataDisponibilitaAl.value =
+dataOggi;
+}
+}
+
+
+function raccogliDatiForm() {
+
+const cameraSelezionata =
+camera.value;
+
+const numeroCameraSelezionata =
+Number(cameraSelezionata);
+
+return {
+
+nome:
+nome.value.trim(),
+
+telefono:
+telefono.value.trim(),
+
+camera:
+numeroCameraSelezionata,
+
+numero_ospiti:
+Number(numeroOspiti.value || 1),
+
+arrivo:
+arrivo.value,
+
+partenza:
+partenza.value,
+
+prezzo:
+Number(prezzo.value || 0),
+
+caparra:
+Number(caparra.value || 0),
+
+importo_animali:
+Number(importoAnimali.value || 0),
+
+trattamento:
+trattamento.value,
+
+stato:
+stato.value,
+
+note:
+note.value.trim()
+};
+}
+
+
+function trovaConflitto(nuovaPrenotazione) {
+
+return prenotazioni.find(prenotazione => {
+
+if (
+prenotazioneInModifica &&
+String(prenotazione.id) ===
+String(prenotazioneInModifica.id)
+) {
+return false;
+}
+
+if (
+String(prenotazione.stato).toLowerCase() ===
+"cancellata"
+) {
+return false;
+}
+
+const cameraEsistente =
+numeroCamera(prenotazione.camera);
+
+const cameraNuova =
+numeroCamera(nuovaPrenotazione.camera);
+
+if (
+cameraEsistente !== cameraNuova
+) {
+return false;
+}
+
+const arrivoEsistente =
+prenotazione.arrivo;
+
+const partenzaEsistente =
+prenotazione.partenza;
+
+const arrivoNuovo =
+nuovaPrenotazione.arrivo;
+
+const partenzaNuova =
+nuovaPrenotazione.partenza;
+
+/*
+Regola alberghiera:
+
+5 -> 10 e 10 -> 12 NON sono in conflitto.
+
+Il conflitto esiste solamente quando
+gli intervalli si sovrappongono realmente.
+*/
+
+return (
+arrivoNuovo < partenzaEsistente &&
+partenzaNuova > arrivoEsistente
+);
+});
+}
+
+
+formPrenotazione.addEventListener(
+"submit",
+async (event) => {
+
+event.preventDefault();
+
+const dati =
+raccogliDatiForm();
+
+if (!dati.nome) {
+
+mostraMessaggio(
+"Inserisci il nome dell'ospite.",
+"errore"
+);
+
+return;
+}
+
+if (
+!dati.camera ||
+!CAMERE.includes(dati.camera)
+) {
+
+mostraMessaggio(
+"Seleziona una camera.",
+"errore"
+);
+
+return;
+}
+
+if (!dataValida(dati.arrivo)) {
+
+mostraMessaggio(
+"Inserisci una data di arrivo valida.",
+"errore"
+);
+
+return;
+}
+
+if (!dataValida(dati.partenza)) {
+
+mostraMessaggio(
+"Inserisci una data di partenza valida.",
+"errore"
+);
+
+return;
+}
+
+if (
+dati.partenza <= dati.arrivo
+) {
+
+mostraMessaggio(
+"La partenza deve essere successiva all'arrivo.",
+"errore"
+);
+
+return;
+}
+
+const conflitto =
+trovaConflitto(dati);
+
+if (conflitto) {
+
+mostraMessaggio(
+"La Camera " +
+dati.camera +
+" è già occupata dal " +
+formattaData(conflitto.arrivo) +
+" al " +
+formattaData(conflitto.partenza) +
+" da " +
+(conflitto.nome || "un altro ospite") +
+".",
+"errore"
+);
+
+return;
+}
+
+btnSalva.disabled = true;
+btnSalva.textContent = "Salvataggio...";
+
+let risultato;
+
+if (prenotazioneInModifica) {
+
+risultato =
+await supabaseClient
+.from("prenotazioni")
+.update(dati)
+.eq(
+"id",
+prenotazioneInModifica.id
+);
+
+} else {
+
+risultato =
+await supabaseClient
+.from("prenotazioni")
+.insert([dati]);
+}
+
+btnSalva.disabled = false;
+
+if (risultato.error) {
+
+console.error(risultato.error);
+
+mostraMessaggio(
+"Errore nel salvataggio: " +
+risultato.error.message,
+"errore"
+);
+
+btnSalva.textContent =
+prenotazioneInModifica
+? "Salva modifica"
+: "Salva prenotazione";
+
+return;
+}
+
+mostraMessaggio(
+prenotazioneInModifica
+? "Prenotazione modificata correttamente."
+: "Prenotazione salvata correttamente.",
+"successo"
+);
+
+resetForm();
+
+await caricaPrenotazioni();
+
+renderCalendario();
+renderTabellaPrenotazioni();
+}
+);
+
+
+function resetForm() {
+
+formPrenotazione.reset();
+
+numeroOspiti.value = 1;
+prezzo.value = 0;
+caparra.value = 0;
+importoAnimali.value = 0;
+stato.value = "confermata";
+
+impostaDatePredefinite();
+
+prenotazioneInModifica = null;
+
+titoloForm.textContent =
+"Nuova prenotazione";
+
+btnSalva.textContent =
+"Salva prenotazione";
+
+btnAnnullaModifica.style.display =
+"none";
+}
+
+
+btnAnnullaModifica.addEventListener(
+"click",
+() => {
+resetForm();
+}
+);
+
+
+/* =========================================================
+CLICK SU CALENDARIO -> NUOVA PRENOTAZIONE
+========================================================= */
+
+function preparaNuovaPrenotazioneDaCalendario(
+numeroCamera,
+data
+) {
+
+/*
+Se stavamo modificando una prenotazione,
+usciamo dalla modalità modifica.
+*/
+
+prenotazioneInModifica = null;
+
+titoloForm.textContent =
+"Nuova prenotazione";
+
+btnSalva.textContent =
+"Salva prenotazione";
+
+btnAnnullaModifica.style.display =
+"none";
+
+/*
+Compiliamo automaticamente:
+- camera
+- arrivo
+- partenza = giorno successivo
+*/
+
+camera.value =
+String(numeroCamera);
+
+arrivo.value =
+data;
+
+const dataPartenza =
+giornoDaStringa(data);
+
+dataPartenza.setDate(
+dataPartenza.getDate() + 1
+);
+
+partenza.value =
+stringaDaData(dataPartenza);
+
+/*
+Puliamo solo i dati anagrafici,
+lasciando camera e date.
+*/
+
+nome.value = "";
+telefono.value = "";
+numeroOspiti.value = 1;
+prezzo.value = 0;
+caparra.value = 0;
+importoAnimali.value = 0;
+trattamento.value = "";
+stato.value = "confermata";
+note.value = "";
+
+/*
+Portiamo la schermata in alto,
+direttamente sulla nuova prenotazione.
+*/
+
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
+
+setTimeout(() => {
+nome.focus();
+}, 400);
+
+mostraMessaggio(
+"Nuova prenotazione pronta: Camera " +
+numeroCamera +
+" dal " +
+formattaData(data) +
+".",
+"info"
+);
+}
+
+
+/* =========================================================
+CALENDARIO
+========================================================= */
+
+function renderCalendario() {
+
+calendario.innerHTML = "";
+
+const giorni =
+giorniNelMese(
+annoVisualizzato,
+meseVisualizzato
+);
+
+meseTitolo.textContent =
+nomeMese(meseVisualizzato) +
+" " +
+annoVisualizzato;
+
+
+/* INTESTAZIONE */
+
+const rigaIntestazione =
+document.createElement("div");
+
+rigaIntestazione.className =
+"riga-calendario riga-intestazione";
+
+const intestazioneCamera =
+document.createElement("div");
+
+intestazioneCamera.className =
+"cella-camera";
+
+intestazioneCamera.textContent =
+"Camera";
+
+rigaIntestazione.appendChild(
+intestazioneCamera
+);
+
+
+for (
+let giorno = 1;
+giorno <= giorni;
+giorno++
+) {
+
+const cella =
+document.createElement("div");
+
+cella.className =
+"giorno";
+
+const data =
+new Date(
+annoVisualizzato,
+meseVisualizzato,
+giorno
+);
+
+const giornoSettimana =
+data.toLocaleDateString(
+"it-IT",
+{ weekday: "short" }
+);
+
+cella.innerHTML =
+giornoSettimana +
+"<br>" +
+giorno;
+
+rigaIntestazione.appendChild(
+cella
+);
+}
+
+calendario.appendChild(
+rigaIntestazione
+);
+
+
+/* RIGHE CAMERE */
+
+const filtro =
+filtroCameraCalendario.value;
+
+CAMERE.forEach(numeroCameraCorrente => {
+
+if (
+filtro &&
+Number(filtro) !==
+numeroCameraCorrente
+) {
+return;
+}
+
+const riga =
+document.createElement("div");
+
+riga.className =
+"riga-calendario";
+
+const cellaCamera =
+document.createElement("div");
+
+cellaCamera.className =
+"cella-camera";
+
+cellaCamera.textContent =
+"Camera " +
+numeroCameraCorrente;
+
+riga.appendChild(
+cellaCamera
+);
+
+
+for (
+let giorno = 1;
+giorno <= giorni;
+giorno++
+) {
+
+const cella =
+document.createElement("div");
+
+cella.className =
+"giorno";
+
+const data =
+new Date(
+annoVisualizzato,
+meseVisualizzato,
+giorno
+);
+
+const stringaData =
+stringaDaData(data);
+
+const oggi =
+stringaDaData(new Date());
+
+if (stringaData === oggi) {
+cella.classList.add("oggi");
+}
+
+/*
+CLICK SULLA CELLA:
+
+Camera 2 / 10 ottobre
+-> apre una nuova prenotazione
+-> Camera 2 già selezionata
+-> Arrivo 10 ottobre
+-> Partenza 11 ottobre
+*/
+
+cella.addEventListener(
+"click",
+() => {
+
+preparaNuovaPrenotazioneDaCalendario(
+numeroCameraCorrente,
+stringaData
+);
+}
+);
+
+riga.appendChild(cella);
+}
+
+
+/* AREA BARRE */
+
+const areaPrenotazioni =
+document.createElement("div");
+
+areaPrenotazioni.className =
+"area-prenotazioni";
+
+
+const prenotazioniCamera =
+prenotazioni.filter(prenotazione => {
+
+const numero =
+numeroCamera(
+prenotazione.camera
+);
+
+return (
+numero === numeroCameraCorrente &&
+prenotazione.arrivo &&
+prenotazione.partenza
+);
+});
+
+
+prenotazioniCamera.forEach(
+prenotazione => {
+
+const barra =
+creaBarraPrenotazione(
+prenotazione,
+giorni
+);
+
+if (barra) {
+areaPrenotazioni.appendChild(
+barra
+);
+}
+}
+);
+
+
+riga.appendChild(
+areaPrenotazioni
+);
+
+calendario.appendChild(riga);
+});
+
+
+if (!filtro) {
+
+/* Se tutte le camere sono visibili,
+il calendario resta normalmente compatto. */
+
+}
+}
+
+
+function creaBarraPrenotazione(
+prenotazione,
+giorniNelMeseCorrente
+) {
+
+const arrivoPrenotazione =
+giornoDaStringa(
+prenotazione.arrivo
+);
+
+const partenzaPrenotazione =
+giornoDaStringa(
+prenotazione.partenza
+);
+
+if (
+!arrivoPrenotazione ||
+!partenzaPrenotazione
+) {
+return null;
+}
+
+const inizioMese =
+new Date(
+annoVisualizzato,
+meseVisualizzato,
+1
+);
+
+const fineMese =
+new Date(
+annoVisualizzato,
+meseVisualizzato + 1,
+1
+);
+
+
+/*
+Se la prenotazione non tocca il mese
+visualizzato, non la disegniamo.
+*/
+
+if (
+partenzaPrenotazione <= inizioMese ||
+arrivoPrenotazione >= fineMese
+) {
+return null;
+}
+
+
+let giornoInizio;
+
+if (
+arrivoPrenotazione < inizioMese
+) {
+giornoInizio = 1;
+} else {
+giornoInizio =
+arrivoPrenotazione.getDate();
+}
+
+
+/*
+CONTROLLO PRENOTAZIONE SUCCESSIVA
+NELLA STESSA CAMERA.
+
+Se qualcuno arriva proprio il giorno
+in cui parte l'ospite precedente,
+dividiamo visivamente il giorno.
+
+Esempio:
+Mario 6 -> 9
+Lucia 9 -> 12
+
+Mario finisce sulla linea del 9,
+Lucia parte dal 9.
+*/
+
+const prossima =
+prenotazioni.find(altra => {
+
+if (
+String(altra.id) ===
+String(prenotazione.id)
+) {
+return false;
+}
+
+if (
+String(altra.stato).toLowerCase() ===
+"cancellata"
+) {
+return false;
+}
+
+return (
+numeroCamera(altra.camera) ===
+numeroCamera(prenotazione.camera) &&
+
+altra.arrivo ===
+prenotazione.partenza
+);
+});
+
+
+let fineVisuale;
+
+
+if (prossima) {
+
+/*
+Se c'è una nuova prenotazione
+esattamente alla partenza,
+la barra uscente NON occupa la
+casella della partenza.
+*/
+
+if (
+partenzaPrenotazione >= fineMese
+) {
+
+fineVisuale =
+giorniNelMeseCorrente + 1;
+
+} else {
+
+fineVisuale =
+partenzaPrenotazione.getDate();
+}
+
+} else {
+
+/*
+Se NON c'è nessuno che arriva
+nello stesso giorno, la barra
+comprende visivamente anche
+la casella della partenza.
+
+Quindi:
+6 -> 9
+occupa le caselle:
+6, 7, 8, 9
+*/
+
+if (
+partenzaPrenotazione >= fineMese
+) {
+
+fineVisuale =
+giorniNelMeseCorrente + 1;
+
+} else {
+
+fineVisuale =
+partenzaPrenotazione.getDate() + 1;
+}
+}
+
+
+/*
+Non facciamo mai uscire la barra
+oltre l'ultimo giorno del mese.
+*/
+
+fineVisuale =
+Math.min(
+fineVisuale,
+giorniNelMeseCorrente + 1
+);
+
+
+const numeroGiorni =
+fineVisuale -
+giornoInizio;
+
+
+if (numeroGiorni <= 0) {
+return null;
+}
+
+
+const barra =
+document.createElement("div");
+
+barra.className =
+"barra-prenotazione";
+
+
+if (
+String(prenotazione.stato).toLowerCase() ===
+"cancellata"
+) {
+
+barra.classList.add(
+"annullata"
+);
+}
+
+
+barra.style.left =
+((giornoInizio - 1) *
+GIORNO_WIDTH) +
+"px";
+
+barra.style.width =
+(numeroGiorni *
+GIORNO_WIDTH - 4) +
+"px";
+
+
+barra.textContent =
+prenotazione.nome ||
+"Prenotazione";
+
+
+barra.title =
+(prenotazione.nome || "") +
+" — Camera " +
+numeroCamera(prenotazione.camera) +
+" — " +
+formattaData(prenotazione.arrivo) +
+" → " +
+formattaData(prenotazione.partenza);
+
+
+barra.addEventListener(
+"click",
+event => {
+
+event.stopPropagation();
+
+mostraDettaglioPrenotazione(
+prenotazione
+);
+}
+);
+
+
+/*
+Linea verticale nel caso in cui
+ci sia una prenotazione successiva
+che parte esattamente alla partenza.
+*/
+
+if (prossima) {
+
+const partenzaNumero =
+partenzaPrenotazione >= fineMese
+? null
+: partenzaPrenotazione.getDate();
+
+if (partenzaNumero !== null) {
+
+const linea =
+document.createElement("div");
+
+linea.className =
+"linea-confine";
+
+linea.style.left =
+((partenzaNumero - 1) *
+GIORNO_WIDTH) +
+"px";
+
+linea.style.height =
+"42px";
+
+linea.style.top =
+"-5px";
+
+barra.appendChild(linea);
+
+
+const etichetta =
+document.createElement("div");
+
+etichetta.className =
+"etichetta-confine";
+
+etichetta.textContent =
+"cambio";
+
+etichetta.style.left =
+((partenzaNumero - 1) *
+GIORNO_WIDTH) +
+"px";
+
+etichetta.style.top =
+"-20px";
+
+barra.appendChild(
+etichetta
+);
+}
+}
+
+
+return barra;
+}
+
+
+/* =========================================================
+CLICK / DETTAGLIO PRENOTAZIONE
+========================================================= */
+
+function mostraDettaglioPrenotazione(
+prenotazione
+) {
+
+dettaglioPrenotazione.style.display =
+"block";
+
+const voci = [
+
+[
+"Nome",
+prenotazione.nome
+],
+
+[
+"Telefono",
+prenotazione.telefono || "-"
+],
+
+[
+"Camera",
+"Camera " +
+numeroCamera(prenotazione.camera)
+],
+
+[
+"Ospiti",
+prenotazione.numero_ospiti || "-"
+],
+
+[
+"Arrivo",
+formattaData(
+prenotazione.arrivo
+)
+],
+
+[
+"Partenza",
+formattaData(
+prenotazione.partenza
+)
+],
+
+[
+"Prezzo",
+"€ " +
+Number(
+prenotazione.prezzo || 0
+).toFixed(2)
+],
+
+[
+"Caparra",
+"€ " +
+Number(
+prenotazione.caparra || 0
+).toFixed(2)
+],
+
+[
+"Animali",
+"€ " +
+Number(
+prenotazione.importo_animali || 0
+).toFixed(2)
+],
+
+[
+"Trattamento",
+prenotazione.trattamento || "-"
+],
+
+[
+"Stato",
+prenotazione.stato || "-"
+],
+
+[
+"Note",
+prenotazione.note || "-"
+]
+];
+
+
+contenutoDettaglio.innerHTML = "";
+
+
+voci.forEach(([titolo, valore]) => {
+
+const div =
+document.createElement("div");
+
+div.className =
+"dettaglio-voce";
+
+const strong =
+document.createElement("strong");
+
+strong.textContent =
+titolo;
+
+const testo =
+document.createElement("div");
+
+testo.textContent =
+valore;
+
+div.appendChild(strong);
+div.appendChild(testo);
+
+contenutoDettaglio.appendChild(
+div
+);
+});
+
+
+window.scrollTo({
+top: dettaglioPrenotazione.offsetTop - 10,
+behavior: "smooth"
+});
+}
+
+
+btnChiudiDettaglio.addEventListener(
+"click",
+() => {
+
+dettaglioPrenotazione.style.display =
+"none";
+}
+);
+
+
+/* =========================================================
+MODIFICA PRENOTAZIONE
+========================================================= */
+
+function modificaPrenotazione(
+prenotazione
+) {
+
+prenotazioneInModifica =
+prenotazione;
+
+titoloForm.textContent =
+"Modifica prenotazione";
+
+btnSalva.textContent =
+"Salva modifica";
+
+btnAnnullaModifica.style.display =
+"inline-block";
+
+
+nome.value =
+prenotazione.nome || "";
+
+telefono.value =
+prenotazione.telefono || "";
+
+camera.value =
+String(
+numeroCamera(
+prenotazione.camera
+)
+);
+
+numeroOspiti.value =
+prenotazione.numero_ospiti || 1;
+
+arrivo.value =
+prenotazione.arrivo || "";
+
+partenza.value =
+prenotazione.partenza || "";
+
+prezzo.value =
+prenotazione.prezzo || 0;
+
+caparra.value =
+prenotazione.caparra || 0;
+
+importoAnimali.value =
+prenotazione.importo_animali || 0;
+
+trattamento.value =
+prenotazione.trattamento || "";
+
+stato.value =
+prenotazione.stato || "confermata";
+
+note.value =
+prenotazione.note || "";
+
+
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
+
+nome.focus();
+}
+
+
+/* =========================================================
+CANCELLAZIONE
+========================================================= */
+
+async function cancellaPrenotazione(
+prenotazione
+) {
+
+const conferma =
+confirm(
+"Vuoi cancellare la prenotazione di " +
+(prenotazione.nome || "") +
+"?"
+);
+
+if (!conferma) {
+return;
+}
+
+
+const {
+error
+} = await supabaseClient
+.from("prenotazioni")
+.update({
+stato: "cancellata"
+})
+.eq(
+"id",
+prenotazione.id
+);
+
+
+if (error) {
+
+console.error(error);
+
+mostraMessaggio(
+"Errore nella cancellazione: " +
+error.message,
+"errore"
+);
+
+return;
+}
+
+
+mostraMessaggio(
+"Prenotazione cancellata.",
+"successo"
+);
+
+
+await caricaPrenotazioni();
+
+renderCalendario();
+renderTabellaPrenotazioni();
+}
+
+
+/* =========================================================
+TABELLA PRENOTAZIONI
+========================================================= */
+
+function renderTabellaPrenotazioni() {
+
+tabellaPrenotazioni.innerHTML = "";
+
+
+const ordinate =
+[...prenotazioni].sort(
+(a, b) => {
+
+if (
+a.arrivo === b.arrivo
+) {
+
+return (
+numeroCamera(a.camera) -
+numeroCamera(b.camera)
+);
+}
+
+return a.arrivo.localeCompare(
+b.arrivo
+);
+}
+);
+
+
+ordinate.forEach(
+prenotazione => {
+
+const tr =
+document.createElement("tr");
+
+
+function aggiungiCella(
+valore
+) {
+
+const td =
+document.createElement("td");
+
+td.textContent =
+valore ?? "-";
+
+tr.appendChild(td);
+
+return td;
+}
+
+
+aggiungiCella(
+prenotazione.nome
+);
+
+aggiungiCella(
+prenotazione.telefono || "-"
+);
+
+aggiungiCella(
+"Camera " +
+numeroCamera(
+prenotazione.camera
+)
+);
+
+aggiungiCella(
+prenotazione.numero_ospiti || "-"
+);
+
+aggiungiCella(
+formattaData(
+prenotazione.arrivo
+)
+);
+
+aggiungiCella(
+formattaData(
+prenotazione.partenza
+)
+);
+
+aggiungiCella(
+"€ " +
+Number(
+prenotazione.prezzo || 0
+).toFixed(2)
+);
+
+aggiungiCella(
+"€ " +
+Number(
+prenotazione.caparra || 0
+).toFixed(2)
+);
+
+aggiungiCella(
+"€ " +
+Number(
+prenotazione.importo_animali || 0
+).toFixed(2)
+);
+
+aggiungiCella(
+prenotazione.trattamento || "-"
+);
+
+
+const tdStato =
+document.createElement("td");
+
+const spanStato =
+document.createElement("span");
+
+const statoTesto =
+prenotazione.stato ||
+"confermata";
+
+spanStato.textContent =
+statoTesto;
+
+spanStato.className =
+"stato " +
+(
+String(statoTesto).toLowerCase() ===
+"cancellata"
+? "stato-cancellata"
+: "stato-confermata"
+);
+
+tdStato.appendChild(
+spanStato
+);
+
+tr.appendChild(
+tdStato
+);
+
+
+aggiungiCella(
+prenotazione.note || "-"
+);
+
+
+const tdAzioni =
+document.createElement("td");
+
+const azioni =
+document.createElement("div");
+
+azioni.className =
+"azioni-tabella";
+
+
+const btnModifica =
+document.createElement("button");
+
+btnModifica.className =
+"btn btn-secondario btn-piccolo";
+
+btnModifica.textContent =
+"Modifica";
+
+btnModifica.addEventListener(
+"click",
+() => {
+
+modificaPrenotazione(
+prenotazione
+);
+}
+);
+
+
+const btnCancella =
+document.createElement("button");
+
+btnCancella.className =
+"btn btn-pericolo btn-piccolo";
+
+btnCancella.textContent =
+"Cancella";
+
+btnCancella.addEventListener(
+"click",
+() => {
+
+cancellaPrenotazione(
+prenotazione
+);
+}
+);
+
+
+azioni.appendChild(
+btnModifica
+);
+
+azioni.appendChild(
+btnCancella
+);
+
+tdAzioni.appendChild(
+azioni
+);
+
+tr.appendChild(
+tdAzioni
+);
+
+
+tabellaPrenotazioni.appendChild(
+tr
+);
+}
+);
+
+
+if (ordinate.length === 0) {
+
+const tr =
+document.createElement("tr");
+
+const td =
+document.createElement("td");
+
+td.colSpan = 13;
+
+td.style.textAlign =
+"center";
+
+td.style.padding =
+"15px";
+
+td.style.color =
+"#78909c";
+
+td.textContent =
+"Nessuna prenotazione.";
+
+tr.appendChild(td);
+
+tabellaPrenotazioni.appendChild(
+tr
+);
+}
+}
+
+
+/* =========================================================
+DISPONIBILITÀ CAMERE
+========================================================= */
+
+btnApriDisponibilita.addEventListener(
+"click",
+() => {
+
+const aperto =
+pannelloDisponibilita.style.display ===
+"block";
+
+if (aperto) {
+
+pannelloDisponibilita.style.display =
+"none";
+
+frecciaDisponibilita.textContent =
+"▼";
+
+} else {
+
+pannelloDisponibilita.style.display =
+"block";
+
+frecciaDisponibilita.textContent =
+"▲";
+
+dataDisponibilitaDal.focus();
+}
+}
+);
+
+
+btnChiudiDisponibilita.addEventListener(
+"click",
+() => {
+
+pannelloDisponibilita.style.display =
+"none";
+
+frecciaDisponibilita.textContent =
+"▼";
+}
+);
+
+
+/*
+Controlla se una camera è disponibile
+per TUTTO l'intervallo richiesto.
+
+Regola:
+
+richiesta 5 -> 10
+
+prenotazione esistente 1 -> 5
+= DISPONIBILE
+
+prenotazione esistente 10 -> 15
+= DISPONIBILE
+
+prenotazione esistente 8 -> 12
+= NON DISPONIBILE
+
+prenotazione esistente 5 -> 10
+= NON DISPONIBILE
+*/
+
+function trovaConflittoDisponibilita(
+numeroCameraDaControllare,
+dataDal,
+dataAl
+) {
+
+return prenotazioni.find(
+prenotazione => {
+
+if (
+String(prenotazione.stato).toLowerCase() ===
+"cancellata"
+) {
+return false;
+}
+
+if (
+numeroCamera(
+prenotazione.camera
+) !==
+numeroCameraDaControllare
+) {
+return false;
+}
+
+if (
+!prenotazione.arrivo ||
+!prenotazione.partenza
+) {
+return false;
+}
+
+
+/*
+Sovrapposizione intervalli.
+
+Per una ricerca 5 -> 5,
+la trasformiamo in un controllo
+sul singolo giorno.
+
+In questo caso consideriamo occupata
+una camera se esiste una prenotazione
+che comprende quel giorno.
+*/
+
+if (dataDal === dataAl) {
+
+return (
+prenotazione.arrivo <= dataDal &&
+prenotazione.partenza >= dataDal
+);
+}
+
+
+return (
+prenotazione.arrivo < dataAl &&
+prenotazione.partenza > dataDal
+);
+}
+);
+}
+
+
+btnCalcolaDisponibilita.addEventListener(
+"click",
+() => {
+
+const dal =
+dataDisponibilitaDal.value;
+
+const al =
+dataDisponibilitaAl.value;
+
+
+if (!dal || !al) {
+
+mostraMessaggio(
+"Inserisci sia la data DAL sia la data AL.",
+"errore"
+);
+
+return;
+}
+
+
+if (al < dal) {
+
+mostraMessaggio(
+"La data AL non può essere precedente alla data DAL.",
+"errore"
+);
+
+return;
+}
+
+
+const risultati =
+CAMERE.map(numero => {
+
+const conflitto =
+trovaConflittoDisponibilita(
+numero,
+dal,
+al
+);
+
+return {
+camera: numero,
+disponibile: !conflitto,
+conflitto
+};
+});
+
+
+const disponibili =
+risultati.filter(
+risultato =>
+risultato.disponibile
+);
+
+
+const occupate =
+risultati.filter(
+risultato =>
+!risultato.disponibile
+);
+
+
+risultatoDisponibilita.innerHTML = "";
+
+
+const riepilogo =
+document.createElement("div");
+
+riepilogo.className =
+"riepilogo-disponibilita";
+
+if (dal === al) {
+
+riepilogo.innerHTML =
+"<strong>Disponibilità del " +
+formattaData(dal) +
+"</strong><br>" +
+disponibili.length +
+" camere disponibili su " +
+CAMERE.length +
+".";
+
+} else {
+
+riepilogo.innerHTML =
+"<strong>Disponibilità dal " +
+formattaData(dal) +
+" al " +
+formattaData(al) +
+"</strong><br>" +
+disponibili.length +
+" camere disponibili per tutto il soggiorno.";
+}
+
+
+risultatoDisponibilita.appendChild(
+riepilogo
+);
+
+
+if (disponibili.length > 0) {
+
+const titolo =
+document.createElement("h3");
+
+titolo.textContent =
+"Camere disponibili";
+
+risultatoDisponibilita.appendChild(
+titolo
+);
+
+
+const lista =
+document.createElement("div");
+
+lista.className =
+"lista-camere-disponibili";
+
+
+disponibili.forEach(
+risultato => {
+
+const cameraDiv =
+document.createElement("div");
+
+cameraDiv.className =
+"camera-disponibile";
+
+cameraDiv.textContent =
+"Camera " +
+risultato.camera;
+
+/*
+Cliccando una camera disponibile
+la usiamo direttamente nella
+nuova prenotazione.
+*/
+
+cameraDiv.style.cursor =
+"pointer";
+
+cameraDiv.title =
+"Clicca per creare una prenotazione";
+
+cameraDiv.addEventListener(
+"click",
+() => {
+
+preparaNuovaPrenotazioneDaCalendario(
+risultato.camera,
+dal
+);
+}
+);
+
+lista.appendChild(
+cameraDiv
+);
+}
+);
+
+
+risultatoDisponibilita.appendChild(
+lista
+);
+} else {
+
+const nessuna =
+document.createElement("div");
+
+nessuna.className =
+"messaggio errore";
+
+nessuna.textContent =
+"Nessuna camera disponibile per il periodo selezionato.";
+
+risultatoDisponibilita.appendChild(
+nessuna
+);
+}
+
+
+if (occupate.length > 0) {
+
+const titolo =
+document.createElement("h3");
+
+titolo.style.marginTop =
+"12px";
+
+titolo.textContent =
+"Camere occupate";
+
+risultatoDisponibilita.appendChild(
+titolo
+);
+
+
+const tabella =
+document.createElement("table");
+
+tabella.className =
+"tabella-disponibilita";
+
+
+tabella.innerHTML =
+`
+<thead>
+<tr>
+<th>Camera</th>
+<th>Ospite</th>
+<th>Periodo</th>
+</tr>
+</thead>
+<tbody></tbody>
+`;
+
+
+const tbody =
+tabella.querySelector("tbody");
+
+
+occupate.forEach(
+risultato => {
+
+const tr =
+document.createElement("tr");
+
+const tdCamera =
+document.createElement("td");
+
+tdCamera.textContent =
+"Camera " +
+risultato.camera;
+
+const tdNome =
+document.createElement("td");
+
+tdNome.textContent =
+risultato.conflitto.nome ||
+"-";
+
+const tdPeriodo =
+document.createElement("td");
+
+tdPeriodo.textContent =
+formattaData(
+risultato.conflitto.arrivo
+) +
+" → " +
+formattaData(
+risultato.conflitto.partenza
+);
+
+tr.appendChild(tdCamera);
+tr.appendChild(tdNome);
+tr.appendChild(tdPeriodo);
+
+tbody.appendChild(tr);
+}
+);
+
+
+risultatoDisponibilita.appendChild(
+tabella
+);
+}
+}
+);
+
+
+/* =========================================================
+CAMBIO MESE
+========================================================= */
+
+document
+.getElementById("btnMesePrecedente")
+.addEventListener(
+"click",
+() => {
+
+meseVisualizzato--;
+
+if (meseVisualizzato < 0) {
+
+meseVisualizzato = 11;
+annoVisualizzato--;
+}
+
+renderCalendario();
+}
+);
+
+
+document
+.getElementById("btnMeseSuccessivo")
+.addEventListener(
+"click",
+() => {
+
+meseVisualizzato++;
+
+if (meseVisualizzato > 11) {
+
+meseVisualizzato = 0;
+annoVisualizzato++;
+}
+
+renderCalendario();
+}
+);
+
+
+document
+.getElementById("btnOggi")
+.addEventListener(
+"click",
+() => {
+
+const oggi =
+new Date();
+
+meseVisualizzato =
+oggi.getMonth();
+
+annoVisualizzato =
+oggi.getFullYear();
+
+renderCalendario();
+}
+);
+
+
+filtroCameraCalendario
+.addEventListener(
+"change",
+() => {
+
+renderCalendario();
+}
+);
+
+
+/* =========================================================
+AVVIO
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+(event, session) => {
+
+if (session) {
+
+mostraApp(session);
+
+} else {
+
+mostraLogin();
+}
+}
+);
+
+
+controllaSessione();
+
+</script>
+
+</body>
+</html>
