@@ -918,14 +918,14 @@ Chiudi
 <div class="controlli-calendario">
 <button class="btn btn-secondario btn-piccolo"
 id="btnMesePrecedente">
-◀
+◀️
 </button>
 
 <div class="mese-titolo" id="meseTitolo"></div>
 
 <button class="btn btn-secondario btn-piccolo"
 id="btnMeseSuccessivo">
-▶
+▶️
 </button>
 
 <button class="btn btn-secondario btn-piccolo"
@@ -1035,6 +1035,17 @@ new Date().getMonth();
 
 let annoVisualizzato =
 new Date().getFullYear();
+
+/*
+NUOVO:
+
+ID della struttura/hotel a cui
+appartiene l'utente attualmente loggato.
+
+Viene recuperato dalla tabella "profili".
+*/
+
+let strutturaIdCorrente = null;
 
 
 /* =========================================================
@@ -1321,7 +1332,7 @@ mese + 1,
 
 
 /* =========================================================
-LOGIN
+LOGIN E PROFILO UTENTE
 ========================================================= */
 
 async function controllaSessione() {
@@ -1332,14 +1343,22 @@ error
 } = await supabaseClient.auth.getSession();
 
 if (error) {
+
 console.error(error);
+
 mostraLogin();
+
 return;
 }
 
 if (data.session) {
-mostraApp(data.session);
+
+await mostraApp(
+data.session
+);
+
 } else {
+
 mostraLogin();
 }
 }
@@ -1348,20 +1367,169 @@ mostraLogin();
 function mostraLogin() {
 
 schermataLogin.style.display = "flex";
+
 app.style.display = "none";
+
+strutturaIdCorrente = null;
+
+utenteLoggato.textContent = "";
+}
+
+
+/*
+NUOVA FUNZIONE:
+
+Carica il profilo dell'utente
+attualmente autenticato.
+
+La tabella "profili" contiene:
+
+id
+struttura_id
+nome
+
+L'id del profilo deve coincidere
+con l'id dell'utente Supabase Auth.
+*/
+
+async function caricaProfiloUtente(sessione) {
+
+if (
+!sessione ||
+!sessione.user
+) {
+
+strutturaIdCorrente = null;
+
+return false;
+}
+
+
+const {
+data,
+error
+} = await supabaseClient
+.from("profili")
+.select("struttura_id, nome")
+.eq(
+"id",
+sessione.user.id
+)
+.maybeSingle();
+
+
+if (error) {
+
+console.error(error);
+
+mostraErroreLogin(
+"Errore nel caricamento del profilo: " +
+error.message
+);
+
+strutturaIdCorrente = null;
+
+return false;
+}
+
+
+if (
+!data ||
+!data.struttura_id
+) {
+
+console.error(
+"Profilo utente non configurato."
+);
+
+mostraErroreLogin(
+"Il tuo utente non è associato a una struttura."
+);
+
+strutturaIdCorrente = null;
+
+return false;
+}
+
+
+/*
+Salviamo l'ID della struttura
+per usarlo quando salviamo
+nuove prenotazioni.
+*/
+
+strutturaIdCorrente =
+data.struttura_id;
+
+
+/*
+Mostriamo l'email dell'utente
+nella testata.
+
+Se in futuro vorremo usare
+il nome del profilo, è già
+disponibile in data.nome.
+*/
+
+utenteLoggato.textContent =
+sessione.user.email ||
+data.nome ||
+"";
+
+
+return true;
 }
 
 
 async function mostraApp(sessione) {
 
-schermataLogin.style.display = "none";
-app.style.display = "block";
+if (
+!sessione ||
+!sessione.user
+) {
 
-if (sessione && sessione.user) {
+mostraLogin();
 
-utenteLoggato.textContent =
-sessione.user.email || "";
+return;
 }
+
+
+/*
+Prima carichiamo il profilo.
+
+È importante farlo PRIMA
+di caricare o salvare prenotazioni.
+*/
+
+const profiloCaricato =
+await caricaProfiloUtente(
+sessione
+);
+
+
+if (!profiloCaricato) {
+
+/*
+L'utente è autenticato ma
+non ha una struttura associata.
+
+Non facciamo entrare nell'app.
+*/
+
+await supabaseClient.auth.signOut();
+
+mostraLogin();
+
+return;
+}
+
+
+schermataLogin.style.display =
+"none";
+
+app.style.display =
+"block";
+
 
 await caricaPrenotazioni();
 
@@ -1416,7 +1584,15 @@ error.message
 return;
 }
 
-mostraApp(data.session);
+
+/*
+Il profilo e la struttura vengono
+caricati dentro mostraApp().
+*/
+
+await mostraApp(
+data.session
+);
 });
 
 
@@ -1434,11 +1610,41 @@ await supabaseClient.auth.signOut();
 
 prenotazioni = [];
 
+strutturaIdCorrente = null;
+
 mostraLogin();
 
 emailLogin.value = "";
+
 passwordLogin.value = "";
 });
+
+
+/*
+Ascoltiamo solo il logout.
+
+Il caricamento iniziale viene
+gestito da controllaSessione().
+Il login viene gestito direttamente
+dal pulsante Accedi.
+
+In questo modo evitiamo di caricare
+due volte l'applicazione.
+*/
+
+supabaseClient.auth.onAuthStateChange(
+(event, session) => {
+
+if (event === "SIGNED_OUT") {
+
+prenotazioni = [];
+
+strutturaIdCorrente = null;
+
+mostraLogin();
+}
+}
+);
 
 
 /* =========================================================
@@ -1560,7 +1766,19 @@ stato:
 stato.value,
 
 note:
-note.value.trim()
+note.value.trim(),
+
+
+/*
+NUOVO:
+
+Ogni prenotazione viene
+associata alla struttura
+dell'utente loggato.
+*/
+
+struttura_id:
+strutturaIdCorrente
 };
 }
 
@@ -1630,6 +1848,26 @@ formPrenotazione.addEventListener(
 async (event) => {
 
 event.preventDefault();
+
+
+/*
+Controllo di sicurezza:
+
+se per qualche motivo non è
+stato recuperato il profilo,
+non permettiamo il salvataggio.
+*/
+
+if (!strutturaIdCorrente) {
+
+mostraMessaggio(
+"Impossibile salvare: struttura dell'utente non configurata.",
+"errore"
+);
+
+return;
+}
+
 
 const dati =
 raccogliDatiForm();
@@ -2659,7 +2897,8 @@ error
 } = await supabaseClient
 .from("prenotazioni")
 .update({
-stato: "cancellata"
+stato: "cancellata",
+struttura_id: strutturaIdCorrente
 })
 .eq(
 "id",
@@ -3426,21 +3665,6 @@ renderCalendario();
 /* =========================================================
 AVVIO
 ========================================================= */
-
-supabaseClient.auth.onAuthStateChange(
-(event, session) => {
-
-if (session) {
-
-mostraApp(session);
-
-} else {
-
-mostraLogin();
-}
-}
-);
-
 
 controllaSessione();
 
