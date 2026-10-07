@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Gestionale Prenotazioni</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 * {
 box-sizing: border-box;
 }
@@ -69,10 +71,10 @@ padding: 20px;
 .box-login {
 width: 100%;
 max-width: 380px;
-background: white;
+background: #fff;
 padding: 28px;
 border-radius: 12px;
-box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+box-shadow: 0 5px 25px rgba(0,0,0,.08);
 }
 
 .box-login h1 {
@@ -108,14 +110,12 @@ font-size: 13px;
 /* SEZIONI */
 
 .sezione {
-background: white;
+background: #fff;
 border-radius: 9px;
 padding: 12px 14px;
 margin-bottom: 12px;
-box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+box-shadow: 0 2px 8px rgba(0,0,0,.05);
 }
-
-/* FORM PRENOTAZIONE */
 
 .sezione-prenotazione {
 padding: 10px 12px;
@@ -127,6 +127,8 @@ justify-content: space-between;
 align-items: center;
 margin-bottom: 8px;
 }
+
+/* FORM */
 
 .griglia-form {
 display: grid;
@@ -197,16 +199,21 @@ padding: 8px 12px;
 cursor: pointer;
 font-size: 13px;
 font-weight: bold;
-transition: 0.15s;
+transition: .15s;
 }
 
 .btn:hover {
-opacity: 0.88;
+opacity: .88;
+}
+
+.btn:disabled {
+opacity: .55;
+cursor: not-allowed;
 }
 
 .btn-principale {
 background: #1976d2;
-color: white;
+color: #fff;
 }
 
 .btn-secondario {
@@ -216,12 +223,12 @@ color: #37474f;
 
 .btn-success {
 background: #2e7d32;
-color: white;
+color: #fff;
 }
 
 .btn-pericolo {
 background: #c62828;
-color: white;
+color: #fff;
 }
 
 .btn-piccolo {
@@ -357,17 +364,7 @@ border-bottom: 1px solid #eceff1;
 text-align: left;
 }
 
-.disponibile {
-color: #2e7d32;
-font-weight: bold;
-}
-
-.non-disponibile {
-color: #c62828;
-font-weight: bold;
-}
-
-/* DETTAGLIO PRENOTAZIONE */
+/* DETTAGLIO */
 
 #dettaglioPrenotazione {
 display: none;
@@ -390,14 +387,6 @@ display: grid;
 grid-template-columns: repeat(6, 1fr);
 gap: 6px 12px;
 font-size: 12px;
-}
-
-.dettaglio-voce strong {
-display: block;
-color: #607d8b;
-font-size: 10px;
-text-transform: uppercase;
-margin-bottom: 2px;
 }
 
 /* CALENDARIO */
@@ -436,7 +425,7 @@ font-size: 12px;
 overflow-x: auto;
 border: 1px solid #cfd8dc;
 border-radius: 6px;
-background: white;
+background: #fff;
 }
 
 .calendario {
@@ -494,13 +483,13 @@ height: 38px;
 
 .riga-intestazione .cella-camera {
 background: #37474f;
-color: white;
+color: #fff;
 z-index: 12;
 }
 
 .riga-intestazione .giorno {
 background: #455a64;
-color: white;
+color: #fff;
 border-color: #607d8b;
 cursor: default;
 }
@@ -524,14 +513,14 @@ top: 5px;
 height: 32px;
 border-radius: 5px;
 background: #43a047;
-color: white;
+color: #fff;
 padding: 0 7px;
 display: flex;
 align-items: center;
 overflow: hidden;
 cursor: pointer;
 pointer-events: auto;
-box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+box-shadow: 0 1px 3px rgba(0,0,0,.18);
 font-size: 11px;
 font-weight: bold;
 white-space: nowrap;
@@ -539,7 +528,7 @@ z-index: 5;
 }
 
 .barra-prenotazione:hover {
-filter: brightness(0.93);
+filter: brightness(.93);
 z-index: 20;
 }
 
@@ -553,7 +542,7 @@ position: absolute;
 top: 0;
 bottom: 0;
 width: 2px;
-background: rgba(0,0,0,0.18);
+background: rgba(0,0,0,.18);
 z-index: 7;
 pointer-events: none;
 }
@@ -578,7 +567,7 @@ text-align: center;
 color: #78909c;
 }
 
-/* TABELLA PRENOTAZIONI */
+/* TABELLA */
 
 .tabella-wrapper {
 overflow-x: auto;
@@ -592,7 +581,7 @@ font-size: 12px;
 
 .tabella-prenotazioni th {
 background: #455a64;
-color: white;
+color: #fff;
 padding: 7px 6px;
 text-align: left;
 white-space: nowrap;
@@ -608,34 +597,27 @@ vertical-align: middle;
 background: #f7f9fa;
 }
 
-.stato {
-display: inline-block;
-padding: 3px 6px;
-border-radius: 4px;
-font-size: 10px;
-font-weight: bold;
-}
-
-.stato-confermata {
-background: #e8f5e9;
-color: #2e7d32;
-}
-
-.stato-cancellata {
-background: #ffebee;
-color: #c62828;
-}
-
 .azioni-tabella {
 display: flex;
 gap: 4px;
 }
 
-/* RESPONSIVE */
+.stato-confermata {
+color: #2e7d32;
+font-weight: bold;
+}
 
-@media (max-width: 1100px) {
+.stato-cancellata {
+color: #c62828;
+font-weight: bold;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px) {
+
 .griglia-form {
-grid-template-columns: repeat(4, 1fr);
+grid-template-columns: repeat(4,1fr);
 }
 
 .campo-largo {
@@ -643,17 +625,19 @@ grid-column: span 2;
 }
 
 .dettaglio-grid {
-grid-template-columns: repeat(3, 1fr);
-}
+grid-template-columns: repeat(3,1fr);
 }
 
-@media (max-width: 700px) {
+}
+
+@media(max-width:700px) {
+
 .contenitore {
 padding: 8px;
 }
 
 .griglia-form {
-grid-template-columns: repeat(2, 1fr);
+grid-template-columns: repeat(2,1fr);
 }
 
 .campo-largo {
@@ -661,7 +645,7 @@ grid-column: span 2;
 }
 
 .dettaglio-grid {
-grid-template-columns: repeat(2, 1fr);
+grid-template-columns: repeat(2,1fr);
 }
 
 .testata {
@@ -673,304 +657,592 @@ flex-direction: column;
 width: 100%;
 justify-content: space-between;
 }
+
 }
+
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
+
 <div id="schermataLogin">
+
 <div class="box-login">
+
 <h1>Gestionale Prenotazioni</h1>
 
 <div class="campo">
-<label for="emailLogin">Email</label>
-<input type="email" id="emailLogin" autocomplete="username">
+
+<label for="emailLogin">
+Email
+</label>
+
+<input
+type="email"
+id="emailLogin"
+autocomplete="username"
+>
+
 </div>
 
-<div class="campo" style="margin-top:10px;">
-<label for="passwordLogin">Password</label>
-<input type="password" id="passwordLogin" autocomplete="current-password">
+<div
+class="campo"
+style="margin-top:10px"
+>
+
+<label for="passwordLogin">
+Password
+</label>
+
+<input
+type="password"
+id="passwordLogin"
+autocomplete="current-password"
+>
+
 </div>
 
-<button class="btn btn-principale"
+<button
+class="btn btn-principale"
 id="btnLogin"
-style="width:100%; margin-top:15px;">
+style="width:100%;margin-top:15px"
+>
 Accedi
 </button>
 
-<div id="erroreLogin" style="margin-top:10px;"></div>
+<div
+id="erroreLogin"
+style="margin-top:10px"
+></div>
+
 </div>
+
 </div>
 
 
 <!-- APP -->
+
 <div id="app">
 
 <div class="contenitore">
 
-<!-- TESTATA -->
 <div class="testata">
-<h1>Gestionale Prenotazioni</h1>
+
+<h1>
+Gestionale Prenotazioni
+</h1>
 
 <div class="testata-destra">
-<span class="utente-loggato" id="utenteLoggato"></span>
-<button class="btn btn-secondario" id="btnLogout">
+
+<span
+class="utente-loggato"
+id="utenteLoggato"
+></span>
+
+<button
+class="btn btn-secondario"
+id="btnLogout"
+>
 Esci
 </button>
+
 </div>
+
 </div>
+
 
 <div id="messaggi"></div>
 
 
-<!-- NUOVA PRENOTAZIONE -->
+<!-- FORM PRENOTAZIONE -->
+
 <div class="sezione sezione-prenotazione">
 
 <div class="titolo-sezione">
-<h2 id="titoloForm">Nuova prenotazione</h2>
+
+<h2 id="titoloForm">
+Nuova prenotazione
+</h2>
+
 </div>
+
 
 <form id="formPrenotazione">
 
 <div class="griglia-form">
 
-<div class="campo">
-<label for="nome">Nome e cognome</label>
-<input type="text" id="nome" required>
-</div>
 
 <div class="campo">
-<label for="telefono">Telefono</label>
-<input type="text" id="telefono">
+
+<label for="nome">
+Nome e cognome
+</label>
+
+<input
+type="text"
+id="nome"
+required
+>
+
 </div>
 
+
 <div class="campo">
-<label for="camera">Camera</label>
-<select id="camera" required>
-<option value="">Seleziona</option>
-<option value="1">Camera 1</option>
-<option value="2">Camera 2</option>
-<option value="3">Camera 3</option>
-<option value="4">Camera 4</option>
-<option value="5">Camera 5</option>
-<option value="6">Camera 6</option>
-<option value="7">Camera 7</option>
-<option value="8">Camera 8</option>
-<option value="9">Camera 9</option>
-<option value="10">Camera 10</option>
-<option value="11">Camera 11</option>
-<option value="12">Camera 12</option>
+
+<label for="telefono">
+Telefono
+</label>
+
+<input
+type="text"
+id="telefono"
+>
+
+</div>
+
+
+<div class="campo">
+
+<label for="camera">
+Camera
+</label>
+
+<select
+id="camera"
+required
+>
+
+<option value="">
+Seleziona
+</option>
+
+<script>
+
+for (let i = 1; i <= 12; i++) {
+
+document.write(
+`<option value="${i}">Camera ${i}</option>`
+);
+
+}
+
+</script>
+
 </select>
+
 </div>
 
-<div class="campo">
-<label for="numeroOspiti">Ospiti</label>
-<input type="number" id="numeroOspiti" min="1" value="1">
-</div>
 
 <div class="campo">
-<label for="arrivo">Arrivo</label>
-<input type="date" id="arrivo" required>
+
+<label for="numeroOspiti">
+Ospiti
+</label>
+
+<input
+type="number"
+id="numeroOspiti"
+min="1"
+value="1"
+>
+
 </div>
 
-<div class="campo">
-<label for="partenza">Partenza</label>
-<input type="date" id="partenza" required>
-</div>
 
 <div class="campo">
-<label for="prezzo">Prezzo €</label>
-<input type="number" id="prezzo" min="0" step="0.01" value="0">
+
+<label for="arrivo">
+Arrivo
+</label>
+
+<input
+type="date"
+id="arrivo"
+required
+>
+
 </div>
 
-<div class="campo">
-<label for="caparra">Caparra €</label>
-<input type="number" id="caparra" min="0" step="0.01" value="0">
-</div>
 
 <div class="campo">
-<label for="importoAnimali">Animali €</label>
-<input type="number" id="importoAnimali" min="0" step="0.01" value="0">
+
+<label for="partenza">
+Partenza
+</label>
+
+<input
+type="date"
+id="partenza"
+required
+>
+
 </div>
 
+
 <div class="campo">
-<label for="trattamento">Trattamento</label>
+
+<label for="prezzo">
+Prezzo €
+</label>
+
+<input
+type="number"
+id="prezzo"
+min="0"
+step=".01"
+value="0"
+>
+
+</div>
+
+
+<div class="campo">
+
+<label for="caparra">
+Caparra €
+</label>
+
+<input
+type="number"
+id="caparra"
+min="0"
+step=".01"
+value="0"
+>
+
+</div>
+
+
+<div class="campo">
+
+<label for="importoAnimali">
+Animali €
+</label>
+
+<input
+type="number"
+id="importoAnimali"
+min="0"
+step=".01"
+value="0"
+>
+
+</div>
+
+
+<div class="campo">
+
+<label for="trattamento">
+Trattamento
+</label>
+
 <select id="trattamento">
-<option value="">Nessuno</option>
-<option value="Solo pernottamento">Solo pernottamento</option>
-<option value="Colazione">Colazione</option>
-<option value="Mezza pensione">Mezza pensione</option>
-<option value="Pensione completa">Pensione completa</option>
+
+<option value="">
+Nessuno
+</option>
+
+<option>
+Solo pernottamento
+</option>
+
+<option>
+Colazione
+</option>
+
+<option>
+Mezza pensione
+</option>
+
+<option>
+Pensione completa
+</option>
+
 </select>
+
 </div>
 
+
 <div class="campo">
-<label for="stato">Stato</label>
+
+<label for="stato">
+Stato
+</label>
+
 <select id="stato">
-<option value="confermata">Confermata</option>
-<option value="cancellata">Cancellata</option>
+
+<option value="confermata">
+Confermata
+</option>
+
+<option value="cancellata">
+Cancellata
+</option>
+
 </select>
+
 </div>
+
 
 <div class="campo campo-largo">
-<label for="note">Note</label>
-<input type="text" id="note">
-</div>
+
+<label for="note">
+Note
+</label>
+
+<input
+type="text"
+id="note"
+>
 
 </div>
+
+
+</div>
+
 
 <div class="azioni-form">
-<button type="submit" class="btn btn-success" id="btnSalva">
+
+<button
+type="submit"
+class="btn btn-success"
+id="btnSalva"
+>
 Salva prenotazione
 </button>
 
-<button type="button"
+<button
+type="button"
 class="btn btn-secondario"
 id="btnAnnullaModifica"
-style="display:none;">
+style="display:none"
+>
 Annulla modifica
 </button>
+
 </div>
 
 </form>
+
 </div>
 
 
-<!-- DISPONIBILITÀ -->
-<div class="sezione disponibilita-sezione">
+<!-- DISPONIBILITA -->
 
-<div class="disponibilita-chiusa">
+<div class="sezione">
 
-<button type="button"
+<button
+type="button"
 class="pulsante-disponibilita"
-id="btnApriDisponibilita">
-<span>🔎 Verifica disponibilità camere</span>
-<span id="frecciaDisponibilita">▼</span>
+id="btnApriDisponibilita"
+>
+
+<span>
+🔎 Verifica disponibilità camere
+</span>
+
+<span id="frecciaDisponibilita">
+▼
+</span>
+
 </button>
 
-</div>
 
 <div id="pannelloDisponibilita">
 
-<h2>Verifica disponibilità camere</h2>
+<h2>
+Verifica disponibilità camere
+</h2>
 
-<p style="font-size:12px; color:#607d8b; margin-bottom:10px;">
-Inserisci arrivo e partenza. Se metti la stessa data in entrambi i campi,
-verrà verificata la disponibilità per quel solo giorno.
+<p
+style="font-size:12px;color:#607d8b"
+>
+Inserisci arrivo e partenza.
+Se sono uguali, viene verificato quel solo giorno.
 </p>
+
 
 <div class="disponibilita-filtri">
 
 <div class="filtro">
-<label for="dataDisponibilitaDal">Dal</label>
-<input type="date" id="dataDisponibilitaDal">
+
+<label for="dataDisponibilitaDal">
+Dal
+</label>
+
+<input
+type="date"
+id="dataDisponibilitaDal"
+>
+
 </div>
+
 
 <div class="filtro">
-<label for="dataDisponibilitaAl">Al</label>
-<input type="date" id="dataDisponibilitaAl">
+
+<label for="dataDisponibilitaAl">
+Al
+</label>
+
+<input
+type="date"
+id="dataDisponibilitaAl"
+>
+
 </div>
 
-<button class="btn btn-principale"
+
+<button
+class="btn btn-principale"
 id="btnCalcolaDisponibilita"
-type="button">
+type="button"
+>
 Verifica
 </button>
 
-<button class="btn btn-secondario"
+
+<button
+class="btn btn-secondario"
 id="btnChiudiDisponibilita"
-type="button">
+type="button"
+>
 Chiudi
 </button>
 
 </div>
+
 
 <div id="risultatoDisponibilita"></div>
 
 </div>
+
 </div>
 
 
-<!-- DETTAGLIO PRENOTAZIONE -->
+<!-- DETTAGLIO -->
+
 <div id="dettaglioPrenotazione">
 
 <div class="dettaglio-titolo">
-<h3>Dettaglio prenotazione</h3>
 
-<button class="btn btn-secondario btn-piccolo"
-id="btnChiudiDettaglio">
+<h3>
+Dettaglio prenotazione
+</h3>
+
+<button
+class="btn btn-secondario btn-piccolo"
+id="btnChiudiDettaglio"
+>
 Chiudi
 </button>
+
 </div>
 
-<div class="dettaglio-grid" id="contenutoDettaglio"></div>
+
+<div
+class="dettaglio-grid"
+id="contenutoDettaglio"
+></div>
 
 </div>
 
 
 <!-- CALENDARIO -->
+
 <div class="sezione">
 
 <div class="calendario-intestazione">
 
 <div class="controlli-calendario">
-<button class="btn btn-secondario btn-piccolo"
-id="btnMesePrecedente">
+
+<button
+class="btn btn-secondario btn-piccolo"
+id="btnMesePrecedente"
+>
 ◀️
 </button>
 
-<div class="mese-titolo" id="meseTitolo"></div>
 
-<button class="btn btn-secondario btn-piccolo"
-id="btnMeseSuccessivo">
+<div
+class="mese-titolo"
+id="meseTitolo"
+></div>
+
+
+<button
+class="btn btn-secondario btn-piccolo"
+id="btnMeseSuccessivo"
+>
 ▶️
 </button>
 
-<button class="btn btn-secondario btn-piccolo"
-id="btnOggi">
+
+<button
+class="btn btn-secondario btn-piccolo"
+id="btnOggi"
+>
 Oggi
 </button>
+
 </div>
 
-<select id="filtroCameraCalendario"
-class="filtro-camera">
-<option value="">Tutte le camere</option>
-<option value="1">Camera 1</option>
-<option value="2">Camera 2</option>
-<option value="3">Camera 3</option>
-<option value="4">Camera 4</option>
-<option value="5">Camera 5</option>
-<option value="6">Camera 6</option>
-<option value="7">Camera 7</option>
-<option value="8">Camera 8</option>
-<option value="9">Camera 9</option>
-<option value="10">Camera 10</option>
-<option value="11">Camera 11</option>
-<option value="12">Camera 12</option>
+
+<select
+id="filtroCameraCalendario"
+class="filtro-camera"
+>
+
+<option value="">
+Tutte le camere
+</option>
+
+<script>
+
+for (let i = 1; i <= 12; i++) {
+
+document.write(
+`<option value="${i}">Camera ${i}</option>`
+);
+
+}
+
+</script>
+
 </select>
 
 </div>
 
+
 <div class="calendario-wrapper">
-<div class="calendario" id="calendario"></div>
-</div>
+
+<div
+class="calendario"
+id="calendario"
+></div>
 
 </div>
 
+</div>
 
-<!-- ELENCO PRENOTAZIONI -->
+
+<!-- TABELLA -->
+
 <div class="sezione">
 
-<h2>Elenco prenotazioni</h2>
+<h2>
+Elenco prenotazioni
+</h2>
 
 <div class="tabella-wrapper">
 
 <table class="tabella-prenotazioni">
 
 <thead>
+
 <tr>
+
 <th>Nome</th>
 <th>Telefono</th>
 <th>Camera</th>
@@ -984,21 +1256,29 @@ class="filtro-camera">
 <th>Stato</th>
 <th>Note</th>
 <th>Azioni</th>
+
 </tr>
+
 </thead>
 
-<tbody id="tabellaPrenotazioni"></tbody>
+
+<tbody
+id="tabellaPrenotazioni"
+></tbody>
 
 </table>
 
 </div>
+
 </div>
 
 </div>
+
 </div>
 
 
 <script>
+
 /* =========================================================
 SUPABASE
 ========================================================= */
@@ -1021,9 +1301,13 @@ VARIABILI
 ========================================================= */
 
 const CAMERE =
-Array.from({ length: 12 }, (_, indice) => indice + 1);
+Array.from(
+{ length: 12 },
+(_, i) => i + 1
+);
 
 const GIORNO_WIDTH = 58;
+
 const CAMERA_WIDTH = 125;
 
 let prenotazioni = [];
@@ -1036,57 +1320,70 @@ new Date().getMonth();
 let annoVisualizzato =
 new Date().getFullYear();
 
-/*
-NUOVO:
-
-ID della struttura/hotel a cui
-appartiene l'utente attualmente loggato.
-
-Viene recuperato dalla tabella "profili".
-*/
-
 let strutturaIdCorrente = null;
 
 
 /* =========================================================
-ELEMENTI
+ELEMENTI HTML
 ========================================================= */
 
 const schermataLogin =
-document.getElementById("schermataLogin");
+document.getElementById(
+"schermataLogin"
+);
 
 const app =
 document.getElementById("app");
 
 const emailLogin =
-document.getElementById("emailLogin");
+document.getElementById(
+"emailLogin"
+);
 
 const passwordLogin =
-document.getElementById("passwordLogin");
+document.getElementById(
+"passwordLogin"
+);
 
 const btnLogin =
-document.getElementById("btnLogin");
+document.getElementById(
+"btnLogin"
+);
 
 const erroreLogin =
-document.getElementById("erroreLogin");
+document.getElementById(
+"erroreLogin"
+);
 
 const btnLogout =
-document.getElementById("btnLogout");
+document.getElementById(
+"btnLogout"
+);
 
 const utenteLoggato =
-document.getElementById("utenteLoggato");
+document.getElementById(
+"utenteLoggato"
+);
 
 const formPrenotazione =
-document.getElementById("formPrenotazione");
+document.getElementById(
+"formPrenotazione"
+);
 
 const titoloForm =
-document.getElementById("titoloForm");
+document.getElementById(
+"titoloForm"
+);
 
 const btnSalva =
-document.getElementById("btnSalva");
+document.getElementById(
+"btnSalva"
+);
 
 const btnAnnullaModifica =
-document.getElementById("btnAnnullaModifica");
+document.getElementById(
+"btnAnnullaModifica"
+);
 
 const nome =
 document.getElementById("nome");
@@ -1098,13 +1395,17 @@ const camera =
 document.getElementById("camera");
 
 const numeroOspiti =
-document.getElementById("numeroOspiti");
+document.getElementById(
+"numeroOspiti"
+);
 
 const arrivo =
 document.getElementById("arrivo");
 
 const partenza =
-document.getElementById("partenza");
+document.getElementById(
+"partenza"
+);
 
 const prezzo =
 document.getElementById("prezzo");
@@ -1113,10 +1414,14 @@ const caparra =
 document.getElementById("caparra");
 
 const importoAnimali =
-document.getElementById("importoAnimali");
+document.getElementById(
+"importoAnimali"
+);
 
 const trattamento =
-document.getElementById("trattamento");
+document.getElementById(
+"trattamento"
+);
 
 const stato =
 document.getElementById("stato");
@@ -1125,184 +1430,234 @@ const note =
 document.getElementById("note");
 
 const messaggi =
-document.getElementById("messaggi");
+document.getElementById(
+"messaggi"
+);
 
 const btnApriDisponibilita =
-document.getElementById("btnApriDisponibilita");
+document.getElementById(
+"btnApriDisponibilita"
+);
 
 const btnChiudiDisponibilita =
-document.getElementById("btnChiudiDisponibilita");
+document.getElementById(
+"btnChiudiDisponibilita"
+);
 
 const pannelloDisponibilita =
-document.getElementById("pannelloDisponibilita");
+document.getElementById(
+"pannelloDisponibilita"
+);
 
 const frecciaDisponibilita =
-document.getElementById("frecciaDisponibilita");
+document.getElementById(
+"frecciaDisponibilita"
+);
 
 const dataDisponibilitaDal =
-document.getElementById("dataDisponibilitaDal");
+document.getElementById(
+"dataDisponibilitaDal"
+);
 
 const dataDisponibilitaAl =
-document.getElementById("dataDisponibilitaAl");
+document.getElementById(
+"dataDisponibilitaAl"
+);
 
 const btnCalcolaDisponibilita =
-document.getElementById("btnCalcolaDisponibilita");
+document.getElementById(
+"btnCalcolaDisponibilita"
+);
 
 const risultatoDisponibilita =
-document.getElementById("risultatoDisponibilita");
+document.getElementById(
+"risultatoDisponibilita"
+);
 
 const dettaglioPrenotazione =
-document.getElementById("dettaglioPrenotazione");
+document.getElementById(
+"dettaglioPrenotazione"
+);
 
 const contenutoDettaglio =
-document.getElementById("contenutoDettaglio");
+document.getElementById(
+"contenutoDettaglio"
+);
 
 const btnChiudiDettaglio =
-document.getElementById("btnChiudiDettaglio");
+document.getElementById(
+"btnChiudiDettaglio"
+);
 
 const calendario =
-document.getElementById("calendario");
+document.getElementById(
+"calendario"
+);
 
 const meseTitolo =
-document.getElementById("meseTitolo");
+document.getElementById(
+"meseTitolo"
+);
 
 const filtroCameraCalendario =
-document.getElementById("filtroCameraCalendario");
+document.getElementById(
+"filtroCameraCalendario"
+);
 
 const tabellaPrenotazioni =
-document.getElementById("tabellaPrenotazioni");
+document.getElementById(
+"tabellaPrenotazioni"
+);
 
 
 /* =========================================================
-FUNZIONI UTILI
+FUNZIONI GENERALI
 ========================================================= */
 
-function mostraMessaggio(testo, tipo = "info") {
+function mostraMessaggio(
+testo,
+tipo = "info"
+) {
 
 messaggi.innerHTML = "";
 
-const div =
+const d =
 document.createElement("div");
 
-div.className =
+d.className =
 "messaggio " + tipo;
 
-div.textContent = testo;
+d.textContent = testo;
 
-messaggi.appendChild(div);
+messaggi.appendChild(d);
 
 setTimeout(() => {
-div.remove();
-}, 5000);
+
+if (d.parentNode) {
+d.remove();
+}
+
+}, 6000);
+
 }
 
 
-function mostraErroreLogin(testo) {
+function mostraErroreLogin(
+testo
+) {
 
 erroreLogin.innerHTML = "";
 
-const div =
+const d =
 document.createElement("div");
 
-div.className =
+d.className =
 "messaggio errore";
 
-div.textContent = testo;
+d.textContent = testo;
 
-erroreLogin.appendChild(div);
+erroreLogin.appendChild(d);
+
 }
 
 
-function dataValida(data) {
-if (!data) return false;
+function dataValida(d) {
 
-const d = new Date(data + "T00:00:00");
+if (!d) {
+return false;
+}
 
-return !isNaN(d.getTime());
+const x =
+new Date(
+d + "T00:00:00"
+);
+
+return !isNaN(
+x.getTime()
+);
+
 }
 
 
-function formattaData(data) {
+function formattaData(d) {
 
-if (!data) return "";
-
-const parti =
-data.split("-");
-
-if (parti.length !== 3) {
-return data;
+if (!d) {
+return "";
 }
+
+const p =
+d.split("-");
+
+if (p.length === 3) {
 
 return (
-parti[2] +
+p[2] +
 "/" +
-parti[1] +
+p[1] +
 "/" +
-parti[0]
+p[0]
 );
+
+}
+
+return d;
+
 }
 
 
-function numeroCamera(valore) {
+function numeroCamera(v) {
 
 if (
-valore === null ||
-valore === undefined ||
-valore === ""
+v === null ||
+v === undefined ||
+v === ""
 ) {
 return null;
 }
 
-const testo =
-String(valore);
-
-const trovato =
-testo.match(/\d+/);
-
-if (!trovato) {
-return null;
-}
-
-return Number(trovato[0]);
-}
-
-
-function giornoDaStringa(data) {
-
-if (!data) return null;
-
-return new Date(
-data + "T00:00:00"
+const m =
+String(v).match(
+/\d+/
 );
+
+return m
+? Number(m[0])
+: null;
+
 }
 
 
-function stringaDaData(data) {
+function giornoDaStringa(d) {
 
-const anno =
-data.getFullYear();
+return d
+? new Date(
+d + "T00:00:00"
+)
+: null;
 
-const mese =
-String(data.getMonth() + 1)
-.padStart(2, "0");
+}
 
-const giorno =
-String(data.getDate())
-.padStart(2, "0");
+
+function stringaDaData(d) {
 
 return (
-anno +
+d.getFullYear() +
 "-" +
-mese +
+String(
+d.getMonth() + 1
+).padStart(2, "0") +
 "-" +
-giorno
+String(
+d.getDate()
+).padStart(2, "0")
 );
+
 }
 
 
-function nomeMese(mese) {
+function nomeMese(m) {
 
-const mesi = [
+return [
 "Gennaio",
 "Febbraio",
 "Marzo",
@@ -1315,102 +1670,80 @@ const mesi = [
 "Ottobre",
 "Novembre",
 "Dicembre"
-];
+][m];
 
-return mesi[mese];
 }
 
 
-function giorniNelMese(anno, mese) {
+function giorniNelMese(
+a,
+m
+) {
 
 return new Date(
-anno,
-mese + 1,
+a,
+m + 1,
 0
 ).getDate();
+
 }
 
 
 /* =========================================================
-LOGIN E PROFILO UTENTE
+LOGIN
 ========================================================= */
-
-async function controllaSessione() {
-
-const {
-data,
-error
-} = await supabaseClient.auth.getSession();
-
-if (error) {
-
-console.error(error);
-
-mostraLogin();
-
-return;
-}
-
-if (data.session) {
-
-await mostraApp(
-data.session
-);
-
-} else {
-
-mostraLogin();
-}
-}
-
 
 function mostraLogin() {
 
-schermataLogin.style.display = "flex";
+schermataLogin.style.display =
+"flex";
 
-app.style.display = "none";
+app.style.display =
+"none";
 
-strutturaIdCorrente = null;
+strutturaIdCorrente =
+null;
 
-utenteLoggato.textContent = "";
+utenteLoggato.textContent =
+"";
+
 }
 
 
-/*
-NUOVA FUNZIONE:
+async function caricaProfiloUtente(
+sessione
+) {
 
-Carica il profilo dell'utente
-attualmente autenticato.
-
-La tabella "profili" contiene:
-
-id
-struttura_id
-nome
-
-L'id del profilo deve coincidere
-con l'id dell'utente Supabase Auth.
-*/
-
-async function caricaProfiloUtente(sessione) {
+try {
 
 if (
 !sessione ||
 !sessione.user
 ) {
 
-strutturaIdCorrente = null;
+strutturaIdCorrente =
+null;
 
 return false;
+
 }
+
+
+console.log(
+"ID UTENTE LOGIN:",
+sessione.user.id
+);
 
 
 const {
 data,
 error
-} = await supabaseClient
+} =
+await supabaseClient
 .from("profili")
-.select("struttura_id, nome")
+.select(
+"struttura_id, nome"
+)
 .eq(
 "id",
 sessione.user.id
@@ -1418,58 +1751,78 @@ sessione.user.id
 .maybeSingle();
 
 
+console.log(
+"RISPOSTA PROFILO:",
+data
+);
+
+console.log(
+"ERRORE PROFILO:",
+error
+);
+
+
 if (error) {
 
-console.error(error);
+console.error(
+"Errore caricamento profilo:",
+error
+);
 
 mostraErroreLogin(
-"Errore nel caricamento del profilo: " +
+"Login riuscito, ma c'è un errore nel profilo: " +
 error.message
 );
 
-strutturaIdCorrente = null;
+strutturaIdCorrente =
+null;
 
 return false;
+
 }
 
 
-if (
-!data ||
-!data.struttura_id
-) {
+if (!data) {
 
 console.error(
-"Profilo utente non configurato."
+"Nessun profilo trovato per l'utente:",
+sessione.user.id
 );
 
 mostraErroreLogin(
-"Il tuo utente non è associato a una struttura."
+"Login riuscito, ma non è stato trovato il profilo dell'utente in Supabase."
 );
 
-strutturaIdCorrente = null;
+strutturaIdCorrente =
+null;
 
 return false;
+
 }
 
 
-/*
-Salviamo l'ID della struttura
-per usarlo quando salviamo
-nuove prenotazioni.
-*/
+if (!data.struttura_id) {
+
+console.error(
+"Profilo trovato ma senza struttura_id:",
+data
+);
+
+mostraErroreLogin(
+"Login riuscito, ma il tuo utente non è associato a una struttura."
+);
+
+strutturaIdCorrente =
+null;
+
+return false;
+
+}
+
 
 strutturaIdCorrente =
 data.struttura_id;
 
-
-/*
-Mostriamo l'email dell'utente
-nella testata.
-
-Se in futuro vorremo usare
-il nome del profilo, è già
-disponibile in data.nome.
-*/
 
 utenteLoggato.textContent =
 sessione.user.email ||
@@ -1477,29 +1830,62 @@ data.nome ||
 "";
 
 
+console.log(
+"STRUTTURA UTENTE:",
+strutturaIdCorrente
+);
+
+
 return true;
+
+
+} catch (errore) {
+
+console.error(
+"ERRORE IMPREVISTO PROFILO:",
+errore
+);
+
+mostraErroreLogin(
+"Errore imprevisto durante il caricamento del profilo: " +
+errore.message
+);
+
+strutturaIdCorrente =
+null;
+
+return false;
+
+}
+
 }
 
 
-async function mostraApp(sessione) {
+async function mostraApp(
+sessione
+) {
+
+console.log(
+"MOSTRA APP - SESSIONE:",
+sessione
+);
+
 
 if (
 !sessione ||
 !sessione.user
 ) {
 
+console.error(
+"Nessuna sessione disponibile."
+);
+
 mostraLogin();
 
 return;
+
 }
 
-
-/*
-Prima carichiamo il profilo.
-
-È importante farlo PRIMA
-di caricare o salvare prenotazioni.
-*/
 
 const profiloCaricato =
 await caricaProfiloUtente(
@@ -1509,18 +1895,18 @@ sessione
 
 if (!profiloCaricato) {
 
-/*
-L'utente è autenticato ma
-non ha una struttura associata.
+console.error(
+"Profilo non caricato."
+);
 
-Non facciamo entrare nell'app.
-*/
+app.style.display =
+"none";
 
-await supabaseClient.auth.signOut();
-
-mostraLogin();
+schermataLogin.style.display =
+"flex";
 
 return;
+
 }
 
 
@@ -1538,10 +1924,22 @@ impostaDatePredefinite();
 renderCalendario();
 
 renderTabellaPrenotazioni();
+
 }
 
 
-btnLogin.addEventListener("click", async () => {
+/* =========================================================
+LOGIN - PULSANTE
+========================================================= */
+
+btnLogin.addEventListener(
+"click",
+async () => {
+
+console.log(
+"=== CLICK LOGIN ==="
+);
+
 
 const email =
 emailLogin.value.trim();
@@ -1549,32 +1947,72 @@ emailLogin.value.trim();
 const password =
 passwordLogin.value;
 
-if (!email || !password) {
+
+console.log(
+"EMAIL:",
+email
+);
+
+console.log(
+"PASSWORD INSERITA:",
+password.length > 0
+? "SI"
+: "NO"
+);
+
+
+if (
+!email ||
+!password
+) {
 
 mostraErroreLogin(
 "Inserisci email e password."
 );
 
 return;
+
 }
 
-btnLogin.disabled = true;
-btnLogin.textContent = "Accesso...";
+
+btnLogin.disabled =
+true;
+
+btnLogin.textContent =
+"Accesso...";
+
+
+try {
+
+console.log(
+"Invio richiesta a Supabase..."
+);
+
 
 const {
 data,
 error
-} = await supabaseClient.auth.signInWithPassword({
+} =
+await supabaseClient
+.auth
+.signInWithPassword({
 email,
 password
 });
 
-btnLogin.disabled = false;
-btnLogin.textContent = "Accedi";
+
+console.log(
+"RISPOSTA LOGIN:",
+data
+);
+
+console.log(
+"ERRORE LOGIN:",
+error
+);
+
 
 if (error) {
-
-console.error(error);
 
 mostraErroreLogin(
 "Accesso non riuscito: " +
@@ -1582,88 +2020,247 @@ error.message
 );
 
 return;
+
 }
 
 
-/*
-Il profilo e la struttura vengono
-caricati dentro mostraApp().
-*/
+if (
+!data ||
+!data.session
+) {
+
+mostraErroreLogin(
+"Supabase ha risposto, ma non è stata creata una sessione."
+);
+
+console.error(
+"SESSIONE ASSENTE:",
+data
+);
+
+return;
+
+}
+
+
+console.log(
+"LOGIN RIUSCITO."
+);
+
 
 await mostraApp(
 data.session
 );
-});
 
 
-passwordLogin.addEventListener("keydown", (event) => {
+} catch (errore) {
 
-if (event.key === "Enter") {
+console.error(
+"ERRORE LOGIN IMPREVISTO:",
+errore
+);
+
+mostraErroreLogin(
+"Errore durante l'accesso: " +
+errore.message
+);
+
+
+} finally {
+
+btnLogin.disabled =
+false;
+
+btnLogin.textContent =
+"Accedi";
+
+}
+
+}
+);
+
+
+passwordLogin.addEventListener(
+"keydown",
+e => {
+
+if (e.key === "Enter") {
+
 btnLogin.click();
+
 }
-});
 
-
-btnLogout.addEventListener("click", async () => {
-
-await supabaseClient.auth.signOut();
-
-prenotazioni = [];
-
-strutturaIdCorrente = null;
-
-mostraLogin();
-
-emailLogin.value = "";
-
-passwordLogin.value = "";
-});
-
-
-/*
-Ascoltiamo solo il logout.
-
-Il caricamento iniziale viene
-gestito da controllaSessione().
-Il login viene gestito direttamente
-dal pulsante Accedi.
-
-In questo modo evitiamo di caricare
-due volte l'applicazione.
-*/
-
-supabaseClient.auth.onAuthStateChange(
-(event, session) => {
-
-if (event === "SIGNED_OUT") {
-
-prenotazioni = [];
-
-strutturaIdCorrente = null;
-
-mostraLogin();
-}
 }
 );
 
 
 /* =========================================================
-CARICAMENTO PRENOTAZIONI
+LOGOUT
 ========================================================= */
 
-async function caricaPrenotazioni() {
+btnLogout.addEventListener(
+"click",
+async () => {
+
+await supabaseClient
+.auth
+.signOut();
+
+prenotazioni = [];
+
+strutturaIdCorrente =
+null;
+
+mostraLogin();
+
+emailLogin.value =
+"";
+
+passwordLogin.value =
+"";
+
+}
+);
+
+
+/* =========================================================
+CONTROLLO SESSIONE
+========================================================= */
+
+async function controllaSessione() {
+
+try {
 
 const {
 data,
 error
-} = await supabaseClient
-.from("prenotazioni")
-.select("*")
-.order("arrivo", { ascending: true });
+} =
+await supabaseClient
+.auth
+.getSession();
+
+
+console.log(
+"SESSIONE:",
+data
+);
+
+console.log(
+"ERRORE SESSIONE:",
+error
+);
+
 
 if (error) {
 
-console.error(error);
+mostraErroreLogin(
+"Errore sessione: " +
+error.message
+);
+
+mostraLogin();
+
+return;
+
+}
+
+
+if (data.session) {
+
+await mostraApp(
+data.session
+);
+
+} else {
+
+mostraLogin();
+
+}
+
+} catch (errore) {
+
+console.error(
+"ERRORE CONTROLLO SESSIONE:",
+errore
+);
+
+mostraErroreLogin(
+"Errore durante il controllo della sessione: " +
+errore.message
+);
+
+mostraLogin();
+
+}
+
+}
+
+
+/* =========================================================
+AUTH STATE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+(event) => {
+
+console.log(
+"AUTH EVENT:",
+event
+);
+
+
+if (
+event === "SIGNED_OUT"
+) {
+
+prenotazioni = [];
+
+strutturaIdCorrente =
+null;
+
+mostraLogin();
+
+}
+
+}
+);
+
+
+/* =========================================================
+PRENOTAZIONI
+========================================================= */
+
+async function caricaPrenotazioni() {
+
+try {
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("prenotazioni")
+.select("*")
+.order(
+"arrivo",
+{
+ascending: true
+}
+);
+
+
+console.log(
+"PRENOTAZIONI:",
+data
+);
+
+console.log(
+"ERRORE PRENOTAZIONI:",
+error
+);
+
+
+if (error) {
 
 mostraMessaggio(
 "Errore nel caricamento delle prenotazioni: " +
@@ -1672,12 +2269,88 @@ error.message,
 );
 
 return;
+
 }
+
 
 prenotazioni =
 Array.isArray(data)
 ? data
 : [];
+
+
+} catch (errore) {
+
+console.error(
+"Errore caricamento prenotazioni:",
+errore
+);
+
+mostraMessaggio(
+"Errore nel caricamento delle prenotazioni: " +
+errore.message,
+"errore"
+);
+
+}
+
+}
+
+
+/* =========================================================
+DATE
+========================================================= */
+
+function impostaDatePredefinite() {
+
+const oggi =
+stringaDaData(
+new Date()
+);
+
+
+if (!arrivo.value) {
+
+arrivo.value =
+oggi;
+
+}
+
+
+if (!partenza.value) {
+
+const d =
+new Date();
+
+d.setDate(
+d.getDate() + 1
+);
+
+partenza.value =
+stringaDaData(d);
+
+}
+
+
+if (
+!dataDisponibilitaDal.value
+) {
+
+dataDisponibilitaDal.value =
+oggi;
+
+}
+
+
+if (
+!dataDisponibilitaAl.value
+) {
+
+dataDisponibilitaAl.value =
+oggi;
+
+}
+
 }
 
 
@@ -1685,50 +2358,7 @@ Array.isArray(data)
 FORM
 ========================================================= */
 
-function impostaDatePredefinite() {
-
-const oggi =
-new Date();
-
-const dataOggi =
-stringaDaData(oggi);
-
-if (!arrivo.value) {
-arrivo.value = dataOggi;
-}
-
-if (!partenza.value) {
-
-const domani =
-new Date(oggi);
-
-domani.setDate(
-domani.getDate() + 1
-);
-
-partenza.value =
-stringaDaData(domani);
-}
-
-if (!dataDisponibilitaDal.value) {
-dataDisponibilitaDal.value =
-dataOggi;
-}
-
-if (!dataDisponibilitaAl.value) {
-dataDisponibilitaAl.value =
-dataOggi;
-}
-}
-
-
 function raccogliDatiForm() {
-
-const cameraSelezionata =
-camera.value;
-
-const numeroCameraSelezionata =
-Number(cameraSelezionata);
 
 return {
 
@@ -1739,10 +2369,12 @@ telefono:
 telefono.value.trim(),
 
 camera:
-numeroCameraSelezionata,
+Number(camera.value),
 
 numero_ospiti:
-Number(numeroOspiti.value || 1),
+Number(
+numeroOspiti.value || 1
+),
 
 arrivo:
 arrivo.value,
@@ -1751,13 +2383,19 @@ partenza:
 partenza.value,
 
 prezzo:
-Number(prezzo.value || 0),
+Number(
+prezzo.value || 0
+),
 
 caparra:
-Number(caparra.value || 0),
+Number(
+caparra.value || 0
+),
 
 importo_animali:
-Number(importoAnimali.value || 0),
+Number(
+importoAnimali.value || 0
+),
 
 trattamento:
 trattamento.value,
@@ -1768,95 +2406,80 @@ stato.value,
 note:
 note.value.trim(),
 
-
-/*
-NUOVO:
-
-Ogni prenotazione viene
-associata alla struttura
-dell'utente loggato.
-*/
-
 struttura_id:
 strutturaIdCorrente
+
 };
+
 }
 
 
-function trovaConflitto(nuovaPrenotazione) {
+/* =========================================================
+CONTROLLO SOVRAPPOSIZIONI
+========================================================= */
 
-return prenotazioni.find(prenotazione => {
+function trovaConflitto(n) {
+
+return prenotazioni.find(
+p => {
 
 if (
 prenotazioneInModifica &&
-String(prenotazione.id) ===
-String(prenotazioneInModifica.id)
+String(p.id) ===
+String(
+prenotazioneInModifica.id
+)
 ) {
+
 return false;
+
 }
 
+
 if (
-String(prenotazione.stato).toLowerCase() ===
+String(p.stato)
+.toLowerCase() ===
 "cancellata"
 ) {
+
 return false;
+
 }
 
-const cameraEsistente =
-numeroCamera(prenotazione.camera);
-
-const cameraNuova =
-numeroCamera(nuovaPrenotazione.camera);
 
 if (
-cameraEsistente !== cameraNuova
+numeroCamera(p.camera) !==
+numeroCamera(n.camera)
 ) {
+
 return false;
+
 }
 
-const arrivoEsistente =
-prenotazione.arrivo;
-
-const partenzaEsistente =
-prenotazione.partenza;
-
-const arrivoNuovo =
-nuovaPrenotazione.arrivo;
-
-const partenzaNuova =
-nuovaPrenotazione.partenza;
-
-/*
-Regola alberghiera:
-
-5 -> 10 e 10 -> 12 NON sono in conflitto.
-
-Il conflitto esiste solamente quando
-gli intervalli si sovrappongono realmente.
-*/
 
 return (
-arrivoNuovo < partenzaEsistente &&
-partenzaNuova > arrivoEsistente
+n.arrivo <
+p.partenza &&
+n.partenza >
+p.arrivo
 );
-});
+
+}
+);
+
 }
 
+
+/* =========================================================
+SALVATAGGIO
+========================================================= */
 
 formPrenotazione.addEventListener(
 "submit",
-async (event) => {
+async e => {
 
-event.preventDefault();
+e.preventDefault();
 
-
-/*
-Controllo di sicurezza:
-
-se per qualche motivo non è
-stato recuperato il profilo,
-non permettiamo il salvataggio.
-*/
 
 if (!strutturaIdCorrente) {
 
@@ -1866,13 +2489,15 @@ mostraMessaggio(
 );
 
 return;
+
 }
 
 
-const dati =
+const d =
 raccogliDatiForm();
 
-if (!dati.nome) {
+
+if (!d.nome) {
 
 mostraMessaggio(
 "Inserisci il nome dell'ospite.",
@@ -1880,11 +2505,14 @@ mostraMessaggio(
 );
 
 return;
+
 }
 
+
 if (
-!dati.camera ||
-!CAMERE.includes(dati.camera)
+!CAMERE.includes(
+d.camera
+)
 ) {
 
 mostraMessaggio(
@@ -1893,30 +2521,28 @@ mostraMessaggio(
 );
 
 return;
+
 }
 
-if (!dataValida(dati.arrivo)) {
-
-mostraMessaggio(
-"Inserisci una data di arrivo valida.",
-"errore"
-);
-
-return;
-}
-
-if (!dataValida(dati.partenza)) {
-
-mostraMessaggio(
-"Inserisci una data di partenza valida.",
-"errore"
-);
-
-return;
-}
 
 if (
-dati.partenza <= dati.arrivo
+!dataValida(d.arrivo) ||
+!dataValida(d.partenza)
+) {
+
+mostraMessaggio(
+"Inserisci date valide.",
+"errore"
+);
+
+return;
+
+}
+
+
+if (
+d.partenza <=
+d.arrivo
 ) {
 
 mostraMessaggio(
@@ -1925,43 +2551,66 @@ mostraMessaggio(
 );
 
 return;
+
 }
 
+
 const conflitto =
-trovaConflitto(dati);
+trovaConflitto(d);
+
 
 if (conflitto) {
 
 mostraMessaggio(
 "La Camera " +
-dati.camera +
+d.camera +
 " è già occupata dal " +
-formattaData(conflitto.arrivo) +
+formattaData(
+conflitto.arrivo
+) +
 " al " +
-formattaData(conflitto.partenza) +
+formattaData(
+conflitto.partenza
+) +
 " da " +
-(conflitto.nome || "un altro ospite") +
+(
+conflitto.nome ||
+"un altro ospite"
+) +
 ".",
 "errore"
 );
 
 return;
+
 }
 
-btnSalva.disabled = true;
-btnSalva.textContent = "Salvataggio...";
+
+btnSalva.disabled =
+true;
+
+btnSalva.textContent =
+"Salvataggio...";
+
 
 let risultato;
 
-if (prenotazioneInModifica) {
+
+if (
+prenotazioneInModifica
+) {
 
 risultato =
 await supabaseClient
 .from("prenotazioni")
-.update(dati)
+.update(d)
 .eq(
 "id",
 prenotazioneInModifica.id
+)
+.eq(
+"struttura_id",
+strutturaIdCorrente
 );
 
 } else {
@@ -1969,14 +2618,24 @@ prenotazioneInModifica.id
 risultato =
 await supabaseClient
 .from("prenotazioni")
-.insert([dati]);
+.insert([
+d
+]);
+
 }
 
-btnSalva.disabled = false;
 
-if (risultato.error) {
+btnSalva.disabled =
+false;
 
-console.error(risultato.error);
+
+if (
+risultato.error
+) {
+
+console.error(
+risultato.error
+);
 
 mostraMessaggio(
 "Errore nel salvataggio: " +
@@ -1990,7 +2649,9 @@ prenotazioneInModifica
 : "Salva prenotazione";
 
 return;
+
 }
+
 
 mostraMessaggio(
 prenotazioneInModifica
@@ -1999,64 +2660,46 @@ prenotazioneInModifica
 "successo"
 );
 
+
 resetForm();
 
 await caricaPrenotazioni();
 
 renderCalendario();
+
 renderTabellaPrenotazioni();
-}
-);
 
-
-function resetForm() {
-
-formPrenotazione.reset();
-
-numeroOspiti.value = 1;
-prezzo.value = 0;
-caparra.value = 0;
-importoAnimali.value = 0;
-stato.value = "confermata";
-
-impostaDatePredefinite();
-
-prenotazioneInModifica = null;
-
-titoloForm.textContent =
-"Nuova prenotazione";
-
-btnSalva.textContent =
-"Salva prenotazione";
-
-btnAnnullaModifica.style.display =
-"none";
-}
-
-
-btnAnnullaModifica.addEventListener(
-"click",
-() => {
-resetForm();
 }
 );
 
 
 /* =========================================================
-CLICK SU CALENDARIO -> NUOVA PRENOTAZIONE
+RESET FORM
 ========================================================= */
 
-function preparaNuovaPrenotazioneDaCalendario(
-numeroCamera,
-data
-) {
+function resetForm() {
 
-/*
-Se stavamo modificando una prenotazione,
-usciamo dalla modalità modifica.
-*/
+formPrenotazione.reset();
 
-prenotazioneInModifica = null;
+numeroOspiti.value =
+1;
+
+prezzo.value =
+0;
+
+caparra.value =
+0;
+
+importoAnimali.value =
+0;
+
+stato.value =
+"confermata";
+
+impostaDatePredefinite();
+
+prenotazioneInModifica =
+null;
 
 titoloForm.textContent =
 "Nuova prenotazione";
@@ -2067,66 +2710,106 @@ btnSalva.textContent =
 btnAnnullaModifica.style.display =
 "none";
 
-/*
-Compiliamo automaticamente:
-- camera
-- arrivo
-- partenza = giorno successivo
-*/
+}
+
+
+btnAnnullaModifica.addEventListener(
+"click",
+resetForm
+);
+
+
+/* =========================================================
+NUOVA PRENOTAZIONE DA CALENDARIO
+========================================================= */
+
+function preparaNuovaPrenotazioneDaCalendario(
+cam,
+data
+) {
+
+prenotazioneInModifica =
+null;
+
+titoloForm.textContent =
+"Nuova prenotazione";
+
+btnSalva.textContent =
+"Salva prenotazione";
+
+btnAnnullaModifica.style.display =
+"none";
+
 
 camera.value =
-String(numeroCamera);
+String(cam);
 
 arrivo.value =
 data;
 
-const dataPartenza =
-giornoDaStringa(data);
 
-dataPartenza.setDate(
-dataPartenza.getDate() + 1
+const d =
+giornoDaStringa(
+data
+);
+
+d.setDate(
+d.getDate() + 1
 );
 
 partenza.value =
-stringaDaData(dataPartenza);
+stringaDaData(d);
 
-/*
-Puliamo solo i dati anagrafici,
-lasciando camera e date.
-*/
 
-nome.value = "";
-telefono.value = "";
-numeroOspiti.value = 1;
-prezzo.value = 0;
-caparra.value = 0;
-importoAnimali.value = 0;
-trattamento.value = "";
-stato.value = "confermata";
-note.value = "";
+nome.value =
+"";
 
-/*
-Portiamo la schermata in alto,
-direttamente sulla nuova prenotazione.
-*/
+telefono.value =
+"";
+
+numeroOspiti.value =
+1;
+
+prezzo.value =
+0;
+
+caparra.value =
+0;
+
+importoAnimali.value =
+0;
+
+trattamento.value =
+"";
+
+stato.value =
+"confermata";
+
+note.value =
+"";
+
 
 window.scrollTo({
 top: 0,
 behavior: "smooth"
 });
 
-setTimeout(() => {
-nome.focus();
-}, 400);
+
+setTimeout(
+() => nome.focus(),
+400
+);
+
 
 mostraMessaggio(
 "Nuova prenotazione pronta: Camera " +
-numeroCamera +
+cam +
 " dal " +
 formattaData(data) +
 ".",
 "info"
 );
+
 }
 
 
@@ -2136,7 +2819,9 @@ CALENDARIO
 
 function renderCalendario() {
 
-calendario.innerHTML = "";
+calendario.innerHTML =
+"";
+
 
 const giorni =
 giorniNelMese(
@@ -2144,254 +2829,252 @@ annoVisualizzato,
 meseVisualizzato
 );
 
+
 meseTitolo.textContent =
-nomeMese(meseVisualizzato) +
+nomeMese(
+meseVisualizzato
+) +
 " " +
 annoVisualizzato;
 
 
-/* INTESTAZIONE */
+const head =
+document.createElement(
+"div"
+);
 
-const rigaIntestazione =
-document.createElement("div");
-
-rigaIntestazione.className =
+head.className =
 "riga-calendario riga-intestazione";
 
-const intestazioneCamera =
-document.createElement("div");
 
-intestazioneCamera.className =
+const hc =
+document.createElement(
+"div"
+);
+
+hc.className =
 "cella-camera";
 
-intestazioneCamera.textContent =
+hc.textContent =
 "Camera";
 
-rigaIntestazione.appendChild(
-intestazioneCamera
-);
+head.appendChild(hc);
 
 
 for (
-let giorno = 1;
-giorno <= giorni;
-giorno++
+let g = 1;
+g <= giorni;
+g++
 ) {
 
-const cella =
-document.createElement("div");
+const c =
+document.createElement(
+"div"
+);
 
-cella.className =
+c.className =
 "giorno";
 
-const data =
+
+const d =
 new Date(
 annoVisualizzato,
 meseVisualizzato,
-giorno
+g
 );
 
-const giornoSettimana =
-data.toLocaleDateString(
+
+c.innerHTML =
+d.toLocaleDateString(
 "it-IT",
-{ weekday: "short" }
-);
-
-cella.innerHTML =
-giornoSettimana +
+{
+weekday: "short"
+}
+) +
 "<br>" +
-giorno;
+g;
 
-rigaIntestazione.appendChild(
-cella
-);
+
+head.appendChild(c);
+
 }
 
+
 calendario.appendChild(
-rigaIntestazione
+head
 );
 
-
-/* RIGHE CAMERE */
 
 const filtro =
 filtroCameraCalendario.value;
 
-CAMERE.forEach(numeroCameraCorrente => {
+
+CAMERE.forEach(
+cam => {
 
 if (
 filtro &&
 Number(filtro) !==
-numeroCameraCorrente
+cam
 ) {
+
 return;
+
 }
 
-const riga =
-document.createElement("div");
 
-riga.className =
+const r =
+document.createElement(
+"div"
+);
+
+r.className =
 "riga-calendario";
 
-const cellaCamera =
-document.createElement("div");
 
-cellaCamera.className =
+const cc =
+document.createElement(
+"div"
+);
+
+cc.className =
 "cella-camera";
 
-cellaCamera.textContent =
-"Camera " +
-numeroCameraCorrente;
+cc.textContent =
+"Camera " + cam;
 
-riga.appendChild(
-cellaCamera
-);
+r.appendChild(cc);
 
 
 for (
-let giorno = 1;
-giorno <= giorni;
-giorno++
+let g = 1;
+g <= giorni;
+g++
 ) {
 
-const cella =
-document.createElement("div");
+const c =
+document.createElement(
+"div"
+);
 
-cella.className =
+c.className =
 "giorno";
 
-const data =
+
+const d =
 new Date(
 annoVisualizzato,
 meseVisualizzato,
-giorno
+g
 );
 
-const stringaData =
-stringaDaData(data);
 
-const oggi =
-stringaDaData(new Date());
+const s =
+stringaDaData(d);
 
-if (stringaData === oggi) {
-cella.classList.add("oggi");
+
+if (
+s ===
+stringaDaData(
+new Date()
+)
+) {
+
+c.classList.add(
+"oggi"
+);
+
 }
 
-/*
-CLICK SULLA CELLA:
 
-Camera 2 / 10 ottobre
--> apre una nuova prenotazione
--> Camera 2 già selezionata
--> Arrivo 10 ottobre
--> Partenza 11 ottobre
-*/
-
-cella.addEventListener(
-"click",
-() => {
-
+c.onclick =
+() =>
 preparaNuovaPrenotazioneDaCalendario(
-numeroCameraCorrente,
-stringaData
-);
-}
+cam,
+s
 );
 
-riga.appendChild(cella);
+
+r.appendChild(c);
+
 }
 
 
-/* AREA BARRE */
+const area =
+document.createElement(
+"div"
+);
 
-const areaPrenotazioni =
-document.createElement("div");
-
-areaPrenotazioni.className =
+area.className =
 "area-prenotazioni";
 
 
-const prenotazioniCamera =
-prenotazioni.filter(prenotazione => {
-
-const numero =
+prenotazioni
+.filter(
+p =>
 numeroCamera(
-prenotazione.camera
-);
+p.camera
+) === cam &&
+p.arrivo &&
+p.partenza
+)
+.forEach(
+p => {
 
-return (
-numero === numeroCameraCorrente &&
-prenotazione.arrivo &&
-prenotazione.partenza
-);
-});
-
-
-prenotazioniCamera.forEach(
-prenotazione => {
-
-const barra =
+const b =
 creaBarraPrenotazione(
-prenotazione,
+p,
 giorni
 );
 
-if (barra) {
-areaPrenotazioni.appendChild(
-barra
-);
-}
-}
-);
+if (b) {
 
+area.appendChild(b);
 
-riga.appendChild(
-areaPrenotazioni
+}
+
+}
 );
 
-calendario.appendChild(riga);
-});
 
+r.appendChild(area);
 
-if (!filtro) {
-
-/* Se tutte le camere sono visibili,
-il calendario resta normalmente compatto. */
+calendario.appendChild(r);
 
 }
+);
+
 }
 
+
+/* =========================================================
+BARRE PRENOTAZIONI
+========================================================= */
 
 function creaBarraPrenotazione(
-prenotazione,
-giorniNelMeseCorrente
+p,
+giorni
 ) {
 
-const arrivoPrenotazione =
+const a =
 giornoDaStringa(
-prenotazione.arrivo
+p.arrivo
 );
 
-const partenzaPrenotazione =
+const z =
 giornoDaStringa(
-prenotazione.partenza
+p.partenza
 );
 
-if (
-!arrivoPrenotazione ||
-!partenzaPrenotazione
-) {
-return null;
-}
 
-const inizioMese =
+const inizio =
 new Date(
 annoVisualizzato,
 meseVisualizzato,
 1
 );
 
-const fineMese =
+const fine =
 new Date(
 annoVisualizzato,
 meseVisualizzato + 1,
@@ -2399,315 +3082,274 @@ meseVisualizzato + 1,
 );
 
 
-/*
-Se la prenotazione non tocca il mese
-visualizzato, non la disegniamo.
-*/
-
 if (
-partenzaPrenotazione <= inizioMese ||
-arrivoPrenotazione >= fineMese
+z <= inizio ||
+a >= fine
 ) {
+
 return null;
+
 }
 
 
-let giornoInizio;
+const gi =
+a < inizio
+? 1
+: a.getDate();
 
-if (
-arrivoPrenotazione < inizioMese
-) {
-giornoInizio = 1;
-} else {
-giornoInizio =
-arrivoPrenotazione.getDate();
-}
-
-
-/*
-CONTROLLO PRENOTAZIONE SUCCESSIVA
-NELLA STESSA CAMERA.
-
-Se qualcuno arriva proprio il giorno
-in cui parte l'ospite precedente,
-dividiamo visivamente il giorno.
-
-Esempio:
-Mario 6 -> 9
-Lucia 9 -> 12
-
-Mario finisce sulla linea del 9,
-Lucia parte dal 9.
-*/
 
 const prossima =
-prenotazioni.find(altra => {
+prenotazioni.find(
+x =>
+String(x.id) !==
+String(p.id) &&
 
-if (
-String(altra.id) ===
-String(prenotazione.id)
-) {
-return false;
-}
+String(x.stato)
+.toLowerCase() !==
+"cancellata" &&
 
-if (
-String(altra.stato).toLowerCase() ===
-"cancellata"
-) {
-return false;
-}
+numeroCamera(
+x.camera
+) ===
+numeroCamera(
+p.camera
+) &&
 
-return (
-numeroCamera(altra.camera) ===
-numeroCamera(prenotazione.camera) &&
-
-altra.arrivo ===
-prenotazione.partenza
+x.arrivo ===
+p.partenza
 );
-});
 
 
-let fineVisuale;
+let gf;
 
 
 if (prossima) {
 
-/*
-Se c'è una nuova prenotazione
-esattamente alla partenza,
-la barra uscente NON occupa la
-casella della partenza.
-*/
-
-if (
-partenzaPrenotazione >= fineMese
-) {
-
-fineVisuale =
-giorniNelMeseCorrente + 1;
+gf =
+z >= fine
+? giorni + 1
+: z.getDate();
 
 } else {
 
-fineVisuale =
-partenzaPrenotazione.getDate();
-}
+gf =
+z >= fine
+? giorni + 1
+: z.getDate() + 1;
 
-} else {
-
-/*
-Se NON c'è nessuno che arriva
-nello stesso giorno, la barra
-comprende visivamente anche
-la casella della partenza.
-
-Quindi:
-6 -> 9
-occupa le caselle:
-6, 7, 8, 9
-*/
-
-if (
-partenzaPrenotazione >= fineMese
-) {
-
-fineVisuale =
-giorniNelMeseCorrente + 1;
-
-} else {
-
-fineVisuale =
-partenzaPrenotazione.getDate() + 1;
-}
 }
 
 
-/*
-Non facciamo mai uscire la barra
-oltre l'ultimo giorno del mese.
-*/
-
-fineVisuale =
+gf =
 Math.min(
-fineVisuale,
-giorniNelMeseCorrente + 1
+gf,
+giorni + 1
 );
 
 
-const numeroGiorni =
-fineVisuale -
-giornoInizio;
+const n =
+gf - gi;
 
 
-if (numeroGiorni <= 0) {
+if (n <= 0) {
+
 return null;
+
 }
 
 
-const barra =
-document.createElement("div");
+const b =
+document.createElement(
+"div"
+);
 
-barra.className =
+b.className =
 "barra-prenotazione";
 
 
 if (
-String(prenotazione.stato).toLowerCase() ===
+String(p.stato)
+.toLowerCase() ===
 "cancellata"
 ) {
 
-barra.classList.add(
+b.classList.add(
 "annullata"
 );
+
 }
 
 
-barra.style.left =
-((giornoInizio - 1) *
-GIORNO_WIDTH) +
-"px";
-
-barra.style.width =
-(numeroGiorni *
-GIORNO_WIDTH - 4) +
-"px";
+b.style.left =
+(
+(gi - 1) *
+GIORNO_WIDTH
+) + "px";
 
 
-barra.textContent =
-prenotazione.nome ||
+b.style.width =
+(
+n *
+GIORNO_WIDTH -
+4
+) + "px";
+
+
+b.textContent =
+p.nome ||
 "Prenotazione";
 
 
-barra.title =
-(prenotazione.nome || "") +
+b.title =
+(
+p.nome || ""
+) +
 " — Camera " +
-numeroCamera(prenotazione.camera) +
+numeroCamera(
+p.camera
+) +
 " — " +
-formattaData(prenotazione.arrivo) +
+formattaData(
+p.arrivo
+) +
 " → " +
-formattaData(prenotazione.partenza);
+formattaData(
+p.partenza
+);
 
 
-barra.addEventListener(
-"click",
-event => {
+b.onclick =
+e => {
 
-event.stopPropagation();
+e.stopPropagation();
 
 mostraDettaglioPrenotazione(
-prenotazione
-);
-}
+p
 );
 
+};
 
-/*
-Linea verticale nel caso in cui
-ci sia una prenotazione successiva
-che parte esattamente alla partenza.
-*/
 
-if (prossima) {
+if (
+prossima &&
+z < fine
+) {
 
-const partenzaNumero =
-partenzaPrenotazione >= fineMese
-? null
-: partenzaPrenotazione.getDate();
+const x =
+z.getDate();
 
-if (partenzaNumero !== null) {
 
-const linea =
-document.createElement("div");
+const line =
+document.createElement(
+"div"
+);
 
-linea.className =
+line.className =
 "linea-confine";
 
-linea.style.left =
-((partenzaNumero - 1) *
-GIORNO_WIDTH) +
-"px";
 
-linea.style.height =
+line.style.left =
+(
+(x - 1) *
+GIORNO_WIDTH
+) + "px";
+
+
+line.style.height =
 "42px";
 
-linea.style.top =
+line.style.top =
 "-5px";
 
-barra.appendChild(linea);
+
+b.appendChild(line);
 
 
-const etichetta =
-document.createElement("div");
+const lab =
+document.createElement(
+"div"
+);
 
-etichetta.className =
+lab.className =
 "etichetta-confine";
 
-etichetta.textContent =
+lab.textContent =
 "cambio";
 
-etichetta.style.left =
-((partenzaNumero - 1) *
-GIORNO_WIDTH) +
-"px";
 
-etichetta.style.top =
+lab.style.left =
+(
+(x - 1) *
+GIORNO_WIDTH
+) + "px";
+
+
+lab.style.top =
 "-20px";
 
-barra.appendChild(
-etichetta
-);
-}
+
+b.appendChild(lab);
+
 }
 
 
-return barra;
+return b;
+
 }
 
 
 /* =========================================================
-CLICK / DETTAGLIO PRENOTAZIONE
+DETTAGLIO
 ========================================================= */
 
 function mostraDettaglioPrenotazione(
-prenotazione
+p
 ) {
 
 dettaglioPrenotazione.style.display =
 "block";
 
-const voci = [
+
+contenutoDettaglio.innerHTML =
+"";
+
+
+const elementi = [
 
 [
 "Nome",
-prenotazione.nome
+p.nome
 ],
 
 [
 "Telefono",
-prenotazione.telefono || "-"
+p.telefono || "-"
 ],
 
 [
 "Camera",
 "Camera " +
-numeroCamera(prenotazione.camera)
+numeroCamera(
+p.camera
+)
 ],
 
 [
 "Ospiti",
-prenotazione.numero_ospiti || "-"
+p.numero_ospiti || "-"
 ],
 
 [
 "Arrivo",
 formattaData(
-prenotazione.arrivo
+p.arrivo
 )
 ],
 
 [
 "Partenza",
 formattaData(
-prenotazione.partenza
+p.partenza
 )
 ],
 
@@ -2715,7 +3357,7 @@ prenotazione.partenza
 "Prezzo",
 "€ " +
 Number(
-prenotazione.prezzo || 0
+p.prezzo || 0
 ).toFixed(2)
 ],
 
@@ -2723,7 +3365,7 @@ prenotazione.prezzo || 0
 "Caparra",
 "€ " +
 Number(
-prenotazione.caparra || 0
+p.caparra || 0
 ).toFixed(2)
 ],
 
@@ -2731,136 +3373,165 @@ prenotazione.caparra || 0
 "Animali",
 "€ " +
 Number(
-prenotazione.importo_animali || 0
+p.importo_animali || 0
 ).toFixed(2)
 ],
 
 [
 "Trattamento",
-prenotazione.trattamento || "-"
+p.trattamento || "-"
 ],
 
 [
 "Stato",
-prenotazione.stato || "-"
+p.stato || "-"
 ],
 
 [
 "Note",
-prenotazione.note || "-"
+p.note || "-"
 ]
+
 ];
 
 
-contenutoDettaglio.innerHTML = "";
+elementi.forEach(
+([t, v]) => {
+
+const d =
+document.createElement(
+"div"
+);
+
+const s =
+document.createElement(
+"strong"
+);
+
+const x =
+document.createElement(
+"div"
+);
 
 
-voci.forEach(([titolo, valore]) => {
+s.textContent =
+t;
 
-const div =
-document.createElement("div");
+x.textContent =
+v;
 
-div.className =
-"dettaglio-voce";
 
-const strong =
-document.createElement("strong");
+d.append(
+s,
+x
+);
 
-strong.textContent =
-titolo;
-
-const testo =
-document.createElement("div");
-
-testo.textContent =
-valore;
-
-div.appendChild(strong);
-div.appendChild(testo);
 
 contenutoDettaglio.appendChild(
-div
+d
 );
-});
+
+}
+);
 
 
 window.scrollTo({
-top: dettaglioPrenotazione.offsetTop - 10,
-behavior: "smooth"
+top:
+dettaglioPrenotazione
+.offsetTop - 10,
+behavior:
+"smooth"
 });
+
 }
 
 
-btnChiudiDettaglio.addEventListener(
-"click",
+btnChiudiDettaglio.onclick =
 () => {
 
 dettaglioPrenotazione.style.display =
 "none";
-}
-);
+
+};
 
 
 /* =========================================================
-MODIFICA PRENOTAZIONE
+MODIFICA
 ========================================================= */
 
 function modificaPrenotazione(
-prenotazione
+p
 ) {
 
 prenotazioneInModifica =
-prenotazione;
+p;
+
 
 titoloForm.textContent =
 "Modifica prenotazione";
 
+
 btnSalva.textContent =
 "Salva modifica";
+
 
 btnAnnullaModifica.style.display =
 "inline-block";
 
 
 nome.value =
-prenotazione.nome || "";
+p.nome || "";
+
 
 telefono.value =
-prenotazione.telefono || "";
+p.telefono || "";
+
 
 camera.value =
 String(
 numeroCamera(
-prenotazione.camera
-)
+p.camera
+) || ""
 );
 
+
 numeroOspiti.value =
-prenotazione.numero_ospiti || 1;
+p.numero_ospiti ||
+1;
+
 
 arrivo.value =
-prenotazione.arrivo || "";
+p.arrivo || "";
+
 
 partenza.value =
-prenotazione.partenza || "";
+p.partenza || "";
+
 
 prezzo.value =
-prenotazione.prezzo || 0;
+p.prezzo || 0;
+
 
 caparra.value =
-prenotazione.caparra || 0;
+p.caparra || 0;
+
 
 importoAnimali.value =
-prenotazione.importo_animali || 0;
+p.importo_animali ||
+0;
+
 
 trattamento.value =
-prenotazione.trattamento || "";
+p.trattamento || "";
+
 
 stato.value =
-prenotazione.stato || "confermata";
+p.stato ||
+"confermata";
+
 
 note.value =
-prenotazione.note || "";
+p.note || "";
 
 
 window.scrollTo({
@@ -2868,7 +3539,9 @@ top: 0,
 behavior: "smooth"
 });
 
+
 nome.focus();
+
 }
 
 
@@ -2877,38 +3550,42 @@ CANCELLAZIONE
 ========================================================= */
 
 async function cancellaPrenotazione(
-prenotazione
+p
 ) {
 
-const conferma =
-confirm(
+if (
+!confirm(
 "Vuoi cancellare la prenotazione di " +
-(prenotazione.nome || "") +
+(p.nome || "") +
 "?"
-);
+)
+) {
 
-if (!conferma) {
 return;
+
 }
 
 
 const {
 error
-} = await supabaseClient
+} =
+await supabaseClient
 .from("prenotazioni")
 .update({
-stato: "cancellata",
-struttura_id: strutturaIdCorrente
+stato:
+"cancellata"
 })
 .eq(
 "id",
-prenotazione.id
+p.id
+)
+.eq(
+"struttura_id",
+strutturaIdCorrente
 );
 
 
 if (error) {
-
-console.error(error);
 
 mostraMessaggio(
 "Errore nella cancellazione: " +
@@ -2917,6 +3594,7 @@ error.message,
 );
 
 return;
+
 }
 
 
@@ -2929,7 +3607,96 @@ mostraMessaggio(
 await caricaPrenotazioni();
 
 renderCalendario();
+
 renderTabellaPrenotazioni();
+
+}
+
+
+/* =========================================================
+ELIMINAZIONE DEFINITIVA
+========================================================= */
+
+async function eliminaPrenotazione(
+p
+) {
+
+const conferma =
+confirm(
+"ATTENZIONE!\n\n" +
+"Vuoi eliminare definitivamente la prenotazione di " +
+(p.nome || "") +
+"?\n\n" +
+"La prenotazione verrà eliminata definitivamente dal database e non potrà essere recuperata."
+);
+
+
+if (!conferma) {
+
+return;
+
+}
+
+
+if (
+!strutturaIdCorrente
+) {
+
+mostraMessaggio(
+"Impossibile eliminare: struttura dell'utente non configurata.",
+"errore"
+);
+
+return;
+
+}
+
+
+const {
+error
+} =
+await supabaseClient
+.from("prenotazioni")
+.delete()
+.eq(
+"id",
+p.id
+)
+.eq(
+"struttura_id",
+strutturaIdCorrente
+);
+
+
+if (error) {
+
+console.error(
+error
+);
+
+mostraMessaggio(
+"Errore nell'eliminazione definitiva: " +
+error.message,
+"errore"
+);
+
+return;
+
+}
+
+
+mostraMessaggio(
+"Prenotazione eliminata definitivamente.",
+"successo"
+);
+
+
+await caricaPrenotazioni();
+
+renderCalendario();
+
+renderTabellaPrenotazioni();
+
 }
 
 
@@ -2939,7 +3706,8 @@ TABELLA PRENOTAZIONI
 
 function renderTabellaPrenotazioni() {
 
-tabellaPrenotazioni.innerHTML = "";
+tabellaPrenotazioni.innerHTML =
+"";
 
 
 const ordinate =
@@ -2947,27 +3715,37 @@ const ordinate =
 (a, b) => {
 
 if (
-a.arrivo === b.arrivo
+a.arrivo ===
+b.arrivo
 ) {
 
 return (
-numeroCamera(a.camera) -
-numeroCamera(b.camera)
+numeroCamera(
+a.camera
+) -
+numeroCamera(
+b.camera
+)
 );
+
 }
+
 
 return a.arrivo.localeCompare(
 b.arrivo
 );
+
 }
 );
 
 
 ordinate.forEach(
-prenotazione => {
+p => {
 
 const tr =
-document.createElement("tr");
+document.createElement(
+"tr"
+);
 
 
 function aggiungiCella(
@@ -2975,98 +3753,103 @@ valore
 ) {
 
 const td =
-document.createElement("td");
+document.createElement(
+"td"
+);
 
 td.textContent =
-valore ?? "-";
+valore ??
+"-";
 
 tr.appendChild(td);
 
-return td;
 }
 
 
 aggiungiCella(
-prenotazione.nome
+p.nome
 );
 
 aggiungiCella(
-prenotazione.telefono || "-"
+p.telefono || "-"
 );
 
 aggiungiCella(
 "Camera " +
 numeroCamera(
-prenotazione.camera
+p.camera
 )
 );
 
 aggiungiCella(
-prenotazione.numero_ospiti || "-"
+p.numero_ospiti ||
+"-"
 );
 
 aggiungiCella(
 formattaData(
-prenotazione.arrivo
+p.arrivo
 )
 );
 
 aggiungiCella(
 formattaData(
-prenotazione.partenza
+p.partenza
 )
 );
 
 aggiungiCella(
 "€ " +
 Number(
-prenotazione.prezzo || 0
+p.prezzo || 0
 ).toFixed(2)
 );
 
 aggiungiCella(
 "€ " +
 Number(
-prenotazione.caparra || 0
+p.caparra || 0
 ).toFixed(2)
 );
 
 aggiungiCella(
 "€ " +
 Number(
-prenotazione.importo_animali || 0
+p.importo_animali || 0
 ).toFixed(2)
 );
 
 aggiungiCella(
-prenotazione.trattamento || "-"
+p.trattamento || "-"
 );
 
 
 const tdStato =
-document.createElement("td");
-
-const spanStato =
-document.createElement("span");
-
-const statoTesto =
-prenotazione.stato ||
-"confermata";
-
-spanStato.textContent =
-statoTesto;
-
-spanStato.className =
-"stato " +
-(
-String(statoTesto).toLowerCase() ===
-"cancellata"
-? "stato-cancellata"
-: "stato-confermata"
+document.createElement(
+"td"
 );
 
+const span =
+document.createElement(
+"span"
+);
+
+
+span.textContent =
+p.stato ||
+"confermata";
+
+
+span.className =
+String(p.stato)
+.toLowerCase() ===
+"cancellata"
+? "stato-cancellata"
+: "stato-confermata";
+
+
 tdStato.appendChild(
-spanStato
+span
 );
 
 tr.appendChild(
@@ -3075,22 +3858,29 @@ tdStato
 
 
 aggiungiCella(
-prenotazione.note || "-"
+p.note || "-"
 );
 
 
 const tdAzioni =
-document.createElement("td");
+document.createElement(
+"td"
+);
+
 
 const azioni =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 azioni.className =
 "azioni-tabella";
 
 
 const btnModifica =
-document.createElement("button");
+document.createElement(
+"button"
+);
 
 btnModifica.className =
 "btn btn-secondario btn-piccolo";
@@ -3100,17 +3890,15 @@ btnModifica.textContent =
 
 btnModifica.addEventListener(
 "click",
-() => {
-
-modificaPrenotazione(
-prenotazione
-);
-}
+() =>
+modificaPrenotazione(p)
 );
 
 
 const btnCancella =
-document.createElement("button");
+document.createElement(
+"button"
+);
 
 btnCancella.className =
 "btn btn-pericolo btn-piccolo";
@@ -3120,22 +3908,35 @@ btnCancella.textContent =
 
 btnCancella.addEventListener(
 "click",
-() => {
-
-cancellaPrenotazione(
-prenotazione
-);
-}
+() =>
+cancellaPrenotazione(p)
 );
 
 
-azioni.appendChild(
-btnModifica
+const btnElimina =
+document.createElement(
+"button"
 );
 
-azioni.appendChild(
-btnCancella
+btnElimina.className =
+"btn btn-pericolo btn-piccolo";
+
+btnElimina.textContent =
+"Elimina";
+
+btnElimina.addEventListener(
+"click",
+() =>
+eliminaPrenotazione(p)
 );
+
+
+azioni.append(
+btnModifica,
+btnCancella,
+btnElimina
+);
+
 
 tdAzioni.appendChild(
 azioni
@@ -3149,19 +3950,28 @@ tdAzioni
 tabellaPrenotazioni.appendChild(
 tr
 );
+
 }
 );
 
 
-if (ordinate.length === 0) {
+if (
+!ordinate.length
+) {
 
 const tr =
-document.createElement("tr");
+document.createElement(
+"tr"
+);
 
 const td =
-document.createElement("td");
+document.createElement(
+"td"
+);
 
-td.colSpan = 13;
+
+td.colSpan =
+13;
 
 td.style.textAlign =
 "center";
@@ -3175,148 +3985,128 @@ td.style.color =
 td.textContent =
 "Nessuna prenotazione.";
 
+
 tr.appendChild(td);
 
 tabellaPrenotazioni.appendChild(
 tr
 );
+
 }
+
 }
 
 
 /* =========================================================
-DISPONIBILITÀ CAMERE
+DISPONIBILITA
 ========================================================= */
 
-btnApriDisponibilita.addEventListener(
-"click",
+btnApriDisponibilita.onclick =
 () => {
 
 const aperto =
-pannelloDisponibilita.style.display ===
+pannelloDisponibilita
+.style
+.display ===
 "block";
 
-if (aperto) {
 
-pannelloDisponibilita.style.display =
-"none";
+pannelloDisponibilita
+.style
+.display =
+aperto
+? "none"
+: "block";
 
-frecciaDisponibilita.textContent =
-"▼";
 
-} else {
+frecciaDisponibilita
+.textContent =
+aperto
+? "▼"
+: "▲";
 
-pannelloDisponibilita.style.display =
-"block";
 
-frecciaDisponibilita.textContent =
-"▲";
+if (!aperto) {
 
 dataDisponibilitaDal.focus();
+
 }
-}
-);
+
+};
 
 
-btnChiudiDisponibilita.addEventListener(
-"click",
+btnChiudiDisponibilita.onclick =
 () => {
 
-pannelloDisponibilita.style.display =
+pannelloDisponibilita
+.style
+.display =
 "none";
 
-frecciaDisponibilita.textContent =
+frecciaDisponibilita
+.textContent =
 "▼";
-}
-);
 
+};
 
-/*
-Controlla se una camera è disponibile
-per TUTTO l'intervallo richiesto.
-
-Regola:
-
-richiesta 5 -> 10
-
-prenotazione esistente 1 -> 5
-= DISPONIBILE
-
-prenotazione esistente 10 -> 15
-= DISPONIBILE
-
-prenotazione esistente 8 -> 12
-= NON DISPONIBILE
-
-prenotazione esistente 5 -> 10
-= NON DISPONIBILE
-*/
 
 function trovaConflittoDisponibilita(
-numeroCameraDaControllare,
-dataDal,
-dataAl
+cam,
+dal,
+al
 ) {
 
 return prenotazioni.find(
-prenotazione => {
+p => {
 
 if (
-String(prenotazione.stato).toLowerCase() ===
+String(p.stato)
+.toLowerCase() ===
 "cancellata"
 ) {
+
 return false;
+
 }
+
 
 if (
 numeroCamera(
-prenotazione.camera
-) !==
-numeroCameraDaControllare
+p.camera
+) !== cam
 ) {
+
 return false;
+
 }
+
 
 if (
-!prenotazione.arrivo ||
-!prenotazione.partenza
+dal === al
 ) {
-return false;
-}
-
-
-/*
-Sovrapposizione intervalli.
-
-Per una ricerca 5 -> 5,
-la trasformiamo in un controllo
-sul singolo giorno.
-
-In questo caso consideriamo occupata
-una camera se esiste una prenotazione
-che comprende quel giorno.
-*/
-
-if (dataDal === dataAl) {
 
 return (
-prenotazione.arrivo <= dataDal &&
-prenotazione.partenza >= dataDal
+p.arrivo <=
+dal &&
+p.partenza >=
+dal
 );
+
 }
 
 
 return (
-prenotazione.arrivo < dataAl &&
-prenotazione.partenza > dataDal
+p.arrivo < al &&
+p.partenza > dal
 );
+
 }
 );
+
 }
 
 
-btnCalcolaDisponibilita.addEventListener(
-"click",
+btnCalcolaDisponibilita.onclick =
 () => {
 
 const dal =
@@ -3326,7 +4116,10 @@ const al =
 dataDisponibilitaAl.value;
 
 
-if (!dal || !al) {
+if (
+!dal ||
+!al
+) {
 
 mostraMessaggio(
 "Inserisci sia la data DAL sia la data AL.",
@@ -3334,10 +4127,13 @@ mostraMessaggio(
 );
 
 return;
+
 }
 
 
-if (al < dal) {
+if (
+al < dal
+) {
 
 mostraMessaggio(
 "La data AL non può essere precedente alla data DAL.",
@@ -3345,51 +4141,52 @@ mostraMessaggio(
 );
 
 return;
+
 }
 
 
 const risultati =
-CAMERE.map(numero => {
-
-const conflitto =
+CAMERE.map(
+c => ({
+camera: c,
+conflitto:
 trovaConflittoDisponibilita(
-numero,
+c,
 dal,
 al
+)
+})
 );
-
-return {
-camera: numero,
-disponibile: !conflitto,
-conflitto
-};
-});
 
 
 const disponibili =
 risultati.filter(
-risultato =>
-risultato.disponibile
+x => !x.conflitto
 );
 
 
 const occupate =
 risultati.filter(
-risultato =>
-!risultato.disponibile
+x => x.conflitto
 );
 
 
-risultatoDisponibilita.innerHTML = "";
+risultatoDisponibilita.innerHTML =
+"";
 
 
 const riepilogo =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 riepilogo.className =
 "riepilogo-disponibilita";
 
-if (dal === al) {
+
+if (
+dal === al
+) {
 
 riepilogo.innerHTML =
 "<strong>Disponibilità del " +
@@ -3410,6 +4207,7 @@ formattaData(al) +
 "</strong><br>" +
 disponibili.length +
 " camere disponibili per tutto il soggiorno.";
+
 }
 
 
@@ -3418,65 +4216,61 @@ riepilogo
 );
 
 
-if (disponibili.length > 0) {
+if (
+disponibili.length
+) {
 
-const titolo =
-document.createElement("h3");
+const h =
+document.createElement(
+"h3"
+);
 
-titolo.textContent =
+h.textContent =
 "Camere disponibili";
 
 risultatoDisponibilita.appendChild(
-titolo
+h
 );
 
 
 const lista =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 lista.className =
 "lista-camere-disponibili";
 
 
 disponibili.forEach(
-risultato => {
+x => {
 
-const cameraDiv =
-document.createElement("div");
+const d =
+document.createElement(
+"div"
+);
 
-cameraDiv.className =
+d.className =
 "camera-disponibile";
 
-cameraDiv.textContent =
+d.textContent =
 "Camera " +
-risultato.camera;
+x.camera;
 
-/*
-Cliccando una camera disponibile
-la usiamo direttamente nella
-nuova prenotazione.
-*/
-
-cameraDiv.style.cursor =
+d.style.cursor =
 "pointer";
 
-cameraDiv.title =
-"Clicca per creare una prenotazione";
 
-cameraDiv.addEventListener(
-"click",
-() => {
-
+d.onclick =
+() =>
 preparaNuovaPrenotazioneDaCalendario(
-risultato.camera,
+x.camera,
 dal
 );
-}
-);
 
-lista.appendChild(
-cameraDiv
-);
+
+lista.appendChild(d);
+
 }
 );
 
@@ -3484,47 +4278,60 @@ cameraDiv
 risultatoDisponibilita.appendChild(
 lista
 );
+
+
 } else {
 
-const nessuna =
-document.createElement("div");
+const d =
+document.createElement(
+"div"
+);
 
-nessuna.className =
+d.className =
 "messaggio errore";
 
-nessuna.textContent =
+d.textContent =
 "Nessuna camera disponibile per il periodo selezionato.";
 
+
 risultatoDisponibilita.appendChild(
-nessuna
+d
 );
+
 }
 
 
-if (occupate.length > 0) {
+if (
+occupate.length
+) {
 
-const titolo =
-document.createElement("h3");
+const h =
+document.createElement(
+"h3"
+);
 
-titolo.style.marginTop =
+h.style.marginTop =
 "12px";
 
-titolo.textContent =
+h.textContent =
 "Camere occupate";
 
+
 risultatoDisponibilita.appendChild(
-titolo
+h
 );
 
 
-const tabella =
-document.createElement("table");
+const table =
+document.createElement(
+"table"
+);
 
-tabella.className =
+table.className =
 "tabella-disponibilita";
 
 
-tabella.innerHTML =
+table.innerHTML =
 `
 <thead>
 <tr>
@@ -3533,133 +4340,163 @@ tabella.innerHTML =
 <th>Periodo</th>
 </tr>
 </thead>
+
 <tbody></tbody>
 `;
 
 
 const tbody =
-tabella.querySelector("tbody");
+table.querySelector(
+"tbody"
+);
 
 
 occupate.forEach(
-risultato => {
+x => {
 
 const tr =
-document.createElement("tr");
+document.createElement(
+"tr"
+);
+
 
 const tdCamera =
-document.createElement("td");
+document.createElement(
+"td"
+);
 
 tdCamera.textContent =
 "Camera " +
-risultato.camera;
+x.camera;
+
 
 const tdNome =
-document.createElement("td");
+document.createElement(
+"td"
+);
 
 tdNome.textContent =
-risultato.conflitto.nome ||
+x.conflitto.nome ||
 "-";
 
+
 const tdPeriodo =
-document.createElement("td");
+document.createElement(
+"td"
+);
 
 tdPeriodo.textContent =
 formattaData(
-risultato.conflitto.arrivo
+x.conflitto.arrivo
 ) +
 " → " +
 formattaData(
-risultato.conflitto.partenza
+x.conflitto.partenza
 );
 
-tr.appendChild(tdCamera);
-tr.appendChild(tdNome);
-tr.appendChild(tdPeriodo);
 
-tbody.appendChild(tr);
+tr.append(
+tdCamera,
+tdNome,
+tdPeriodo
+);
+
+
+tbody.appendChild(
+tr
+);
+
 }
 );
 
 
 risultatoDisponibilita.appendChild(
-tabella
+table
 );
+
 }
-}
-);
+
+};
 
 
 /* =========================================================
-CAMBIO MESE
+NAVIGAZIONE CALENDARIO
 ========================================================= */
 
 document
-.getElementById("btnMesePrecedente")
-.addEventListener(
-"click",
+.getElementById(
+"btnMesePrecedente"
+)
+.onclick =
 () => {
 
 meseVisualizzato--;
 
-if (meseVisualizzato < 0) {
+if (
+meseVisualizzato < 0
+) {
 
-meseVisualizzato = 11;
+meseVisualizzato =
+11;
+
 annoVisualizzato--;
+
 }
 
 renderCalendario();
-}
-);
+
+};
 
 
 document
-.getElementById("btnMeseSuccessivo")
-.addEventListener(
-"click",
+.getElementById(
+"btnMeseSuccessivo"
+)
+.onclick =
 () => {
 
 meseVisualizzato++;
 
-if (meseVisualizzato > 11) {
+if (
+meseVisualizzato > 11
+) {
 
-meseVisualizzato = 0;
+meseVisualizzato =
+0;
+
 annoVisualizzato++;
+
 }
 
 renderCalendario();
-}
-);
+
+};
 
 
 document
-.getElementById("btnOggi")
-.addEventListener(
-"click",
+.getElementById(
+"btnOggi"
+)
+.onclick =
 () => {
 
-const oggi =
+const d =
 new Date();
 
 meseVisualizzato =
-oggi.getMonth();
+d.getMonth();
 
 annoVisualizzato =
-oggi.getFullYear();
+d.getFullYear();
 
 renderCalendario();
-}
-);
+
+};
 
 
 filtroCameraCalendario
-.addEventListener(
-"change",
-() => {
-
-renderCalendario();
-}
-);
+.onchange =
+renderCalendario;
 
 
 /* =========================================================
